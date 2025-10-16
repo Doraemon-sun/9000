@@ -1,0 +1,3113 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Template</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(180deg, #eff4ff 0%, #f8fafc 25%, #f1f5f9 100%);
+      color: #1f2937;
+    }
+
+    .page-head {
+      padding: 2.5rem 1.5rem 1rem;
+      background: #0f172a;
+      color: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .page-head h1 {
+      margin: 0;
+      font-size: 1.9rem;
+      letter-spacing: 0.02em;
+    }
+
+    .guide-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.25);
+      color: #e2e8f0;
+      padding: 0.55rem 1.2rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      align-self: flex-start;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    }
+
+    .guide-toggle:focus-visible {
+      outline: 2px solid rgba(56, 189, 248, 0.8);
+      outline-offset: 3px;
+    }
+
+    .guide-toggle:hover {
+      transform: translateY(-1px);
+      border-color: rgba(148, 163, 184, 0.6);
+      background: rgba(148, 163, 184, 0.2);
+      box-shadow: 0 16px 30px -26px rgba(15, 23, 42, 0.75);
+    }
+
+    .guide-toggle[aria-expanded="true"] .guide-toggle-arrow {
+      transform: rotate(-180deg);
+    }
+
+    .guide-toggle-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.3rem;
+      height: 2.3rem;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.18) 0%, rgba(37, 99, 235, 0.32) 100%);
+      color: #cbdffd;
+      font-size: 1.1rem;
+      box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.35);
+    }
+
+    .guide-toggle-label {
+      letter-spacing: 0.01em;
+    }
+
+    .guide-toggle-arrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      background: rgba(148, 163, 184, 0.2);
+      color: rgba(226, 232, 240, 0.9);
+      transition: transform 0.24s ease;
+    }
+
+    .guide-panel {
+      max-width: 60rem;
+      padding: 1.05rem 1.2rem;
+      border-radius: 16px;
+      background: rgba(30, 41, 59, 0.55);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      color: rgba(248, 250, 252, 0.85);
+      line-height: 1.6;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .guide-panel p {
+      margin: 0;
+    }
+
+    .guide-panel .guide-steps {
+      margin: 0.75rem 0 0.85rem;
+      padding-left: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .guide-panel .guide-steps li {
+      position: relative;
+      font-size: 0.95rem;
+      color: rgba(248, 250, 252, 0.9);
+    }
+
+    .guide-note {
+      margin-top: 0.4rem;
+      font-size: 0.9rem;
+      color: rgba(148, 191, 255, 0.92);
+    }
+
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+      display: grid;
+      grid-template-columns: minmax(220px, 260px) 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .section-nav {
+      background: linear-gradient(150deg, rgba(241, 245, 249, 0.95) 0%, #ffffff 62%, #eef2ff 100%);
+      border: 1px solid #d4d9e3;
+      border-radius: 20px;
+      padding: 1.75rem;
+      box-shadow: 0 26px 55px -34px rgba(15, 23, 42, 0.45);
+      position: sticky;
+      top: 2rem;
+    }
+
+    .nav-head {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .nav-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.3rem 0.8rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.1);
+      color: #1d4ed8;
+      border: 1px solid rgba(37, 99, 235, 0.18);
+    }
+
+    .nav-head h2 {
+      margin: 0;
+      font-size: 1.35rem;
+      color: #0f172a;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.9rem 1rem;
+      border-radius: 14px;
+      background: rgba(226, 232, 240, 0.55);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      color: #475569;
+      line-height: 1.55;
+    }
+
+    .nav-note-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(37, 99, 235, 0.18);
+      color: #1d4ed8;
+      flex-shrink: 0;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-note-text {
+      margin: 0;
+      font-size: 0.93rem;
+    }
+
+    .nav-list {
+      list-style: none;
+      margin: 1.5rem 0 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      width: 100%;
+      border: 0;
+      padding: 0.85rem 1rem;
+      border-radius: 14px;
+      background: rgba(226, 232, 240, 0.65);
+      color: #1e293b;
+      font-size: 0.97rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-btn:hover {
+      transform: translateX(4px);
+      background: #d7dde8;
+      box-shadow: 0 14px 28px -22px rgba(15, 23, 42, 0.45);
+    }
+
+    .nav-btn.is-active {
+      background: #2563eb;
+      color: #f8fafc;
+      box-shadow: 0 16px 32px -20px rgba(37, 99, 235, 0.82);
+    }
+
+    .nav-btn-main {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .nav-btn-order {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.1rem;
+      height: 2.1rem;
+      border-radius: 12px;
+      background: rgba(37, 99, 235, 0.16);
+      color: #1d4ed8;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.015em;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-btn-label {
+      font-size: 0.98rem;
+    }
+
+    .nav-btn-arrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.4rem;
+      height: 1.4rem;
+      font-size: 1.1rem;
+      color: #94a3b8;
+      font-weight: 700;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .nav-btn:hover .nav-btn-arrow {
+      color: #2563eb;
+      transform: translateX(4px);
+    }
+
+    .nav-btn.is-active .nav-btn-order {
+      background: rgba(248, 250, 252, 0.2);
+      color: #f8fafc;
+    }
+
+    .nav-btn.is-active .nav-btn-arrow {
+      color: rgba(248, 250, 252, 0.7);
+    }
+
+    .section-content {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .admin-block {
+      display: none;
+      background: linear-gradient(155deg, rgba(248, 250, 252, 0.92) 0%, #ffffff 60%, rgba(226, 232, 240, 0.85) 100%);
+      border: 1px solid #d6dde9;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 28px 60px -34px rgba(15, 23, 42, 0.55);
+      animation: fadeIn 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .admin-block::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(115deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 45%, rgba(148, 163, 184, 0.08) 100%);
+      opacity: 0.6;
+    }
+
+    .admin-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+
+    .admin-block.is-active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .block-head {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem 1.2rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .block-title {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .block-title h2 {
+      margin: 0;
+      font-size: 1.4rem;
+      color: #0f172a;
+      letter-spacing: 0.015em;
+    }
+
+    .block-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.35rem 0.75rem;
+      border-radius: 10px;
+      background: rgba(37, 99, 235, 0.12);
+      border: 1px solid rgba(37, 99, 235, 0.22);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #1d4ed8;
+    }
+
+    .target-file {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.6rem 1rem;
+      border-radius: 14px;
+      background: linear-gradient(140deg, rgba(255, 255, 255, 0.92) 0%, rgba(226, 232, 240, 0.88) 100%);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: 0 18px 36px -28px rgba(15, 23, 42, 0.6);
+      color: #0f172a;
+      min-width: 0;
+    }
+
+    .target-file-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.35rem;
+      height: 2.35rem;
+      border-radius: 12px;
+      background: rgba(37, 99, 235, 0.12);
+      color: #1d4ed8;
+      font-size: 1.05rem;
+      flex-shrink: 0;
+    }
+
+    .target-file-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.18rem;
+      line-height: 1.25;
+      min-width: 0;
+    }
+
+    .target-file-label {
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #475569;
+      font-weight: 700;
+    }
+
+    .target-file-name {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: rgba(15, 23, 42, 0.08);
+      padding: 0.25rem 0.55rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      color: #0f172a;
+      font-family: "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
+    }
+
+    .hint {
+      margin: 0;
+      font-size: 0.95rem;
+      color: #334155;
+      line-height: 1.6;
+      padding: 0.9rem 1rem;
+      border-radius: 12px;
+      background: rgba(226, 232, 240, 0.6);
+      border: 1px solid rgba(203, 213, 225, 0.65);
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 340px;
+      font-family: "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
+      font-size: 0.95rem;
+      line-height: 1.55;
+      padding: 1.35rem 1.4rem;
+      border: 1px solid rgba(71, 85, 105, 0.6);
+      border-radius: 16px;
+      resize: vertical;
+      background: linear-gradient(170deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.92) 100%);
+      color: #e2e8f0;
+      box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.15), 0 30px 60px -35px rgba(15, 23, 42, 0.85);
+      tab-size: 2;
+      white-space: pre;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    textarea:focus-visible,
+    textarea:focus {
+      outline: none;
+      border-color: rgba(37, 99, 235, 0.65);
+      box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.45), 0 36px 70px -34px rgba(37, 99, 235, 0.55);
+      transform: translateY(-1px);
+    }
+
+    textarea::selection {
+      background: rgba(59, 130, 246, 0.35);
+      color: #f8fafc;
+    }
+
+    textarea::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    textarea::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.35);
+      border-radius: 999px;
+    }
+
+    textarea::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.55);
+      border-radius: 999px;
+    }
+
+    textarea::-webkit-scrollbar-thumb:hover {
+      background: rgba(59, 130, 246, 0.55);
+    }
+
+    .button-row {
+      margin-top: 0.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      align-items: center;
+    }
+
+    .action-btn {
+      border: none;
+      font-weight: 600;
+      padding: 0.58rem 1.3rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: transform 0.16s ease, background 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .copy-btn {
+      background: #2563eb;
+      color: #f8fafc;
+      box-shadow: 0 16px 30px -24px rgba(37, 99, 235, 0.7);
+    }
+
+    .copy-btn:hover {
+      transform: translateY(-1px);
+      background: #1d4ed8;
+    }
+
+    .copy-btn:active {
+      transform: translateY(1px);
+    }
+
+    .reset-btn {
+      background: rgba(15, 23, 42, 0.06);
+      color: #1f2937;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+    }
+
+    .reset-btn:hover {
+      transform: translateY(-1px);
+      background: rgba(148, 163, 184, 0.25);
+    }
+
+    .reset-btn:active {
+      transform: translateY(1px);
+    }
+
+    .add-goal-btn {
+      background: rgba(37, 99, 235, 0.12);
+      color: #1d4ed8;
+      border: 1px solid rgba(37, 99, 235, 0.28);
+    }
+
+    .add-goal-btn:hover {
+      transform: translateY(-1px);
+      background: rgba(37, 99, 235, 0.22);
+    }
+
+    .add-goal-btn:active {
+      transform: translateY(1px);
+    }
+
+    .delete-btn {
+      background: rgba(220, 38, 38, 0.14);
+      color: #b91c1c;
+      border: 1px solid rgba(220, 38, 38, 0.28);
+    }
+
+    .delete-btn:hover {
+      transform: translateY(-1px);
+      background: rgba(220, 38, 38, 0.24);
+    }
+
+    .delete-btn:active {
+      transform: translateY(1px);
+    }
+
+    .status {
+      display: inline-block;
+      font-size: 0.9rem;
+      color: #047857;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .status.is-visible {
+      opacity: 1;
+    }
+
+    .copy-toast {
+      position: fixed;
+      top: 1.75rem;
+      left: 50%;
+      transform: translate(-50%, -30px) scale(0.95);
+      background: rgba(15, 23, 42, 0.88);
+      color: #f8fafc;
+      padding: 0.75rem 1.4rem;
+      border-radius: 999px;
+      box-shadow: 0 18px 38px -24px rgba(15, 23, 42, 0.75);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 1000;
+      letter-spacing: 0.015em;
+      font-weight: 600;
+    }
+
+    .copy-toast.is-visible {
+      opacity: 1;
+      transform: translate(-50%, 0) scale(1);
+    }
+
+    body.skill-modal-open {
+      overflow: hidden;
+    }
+
+    .skill-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(6px);
+      z-index: 3000;
+      animation: modalBackdropIn 0.2s ease;
+    }
+
+    .skill-modal-panel {
+      width: min(92vw, 360px);
+      background: linear-gradient(150deg, rgba(255, 255, 255, 0.98) 0%, rgba(226, 232, 240, 0.95) 100%);
+      border-radius: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      box-shadow: 0 30px 60px -32px rgba(15, 23, 42, 0.65);
+      padding: 1.65rem;
+      color: #0f172a;
+      animation: skillModalIn 0.24s ease;
+    }
+
+    .skill-modal-panel h3 {
+      margin: 0 0 0.35rem;
+      font-size: 1.18rem;
+    }
+
+    .skill-modal-panel p {
+      margin: 0 0 1.15rem;
+      color: #475569;
+      line-height: 1.5;
+      font-size: 0.95rem;
+    }
+
+    .skill-modal-label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: #1e293b;
+      margin-bottom: 0.35rem;
+    }
+
+    .skill-modal-select {
+      width: 100%;
+      padding: 0.55rem 0.75rem;
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      font-size: 0.96rem;
+      background: rgba(248, 250, 252, 0.9);
+      color: #0f172a;
+      margin-bottom: 1.2rem;
+    }
+
+    .skill-modal-select:focus {
+      outline: 2px solid rgba(37, 99, 235, 0.55);
+      outline-offset: 2px;
+      border-color: rgba(37, 99, 235, 0.45);
+    }
+
+    .skill-modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+    }
+
+    .skill-modal-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 0.55rem 1.25rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .skill-modal-btn:focus-visible {
+      outline: 2px solid rgba(37, 99, 235, 0.6);
+      outline-offset: 2px;
+    }
+
+    .skill-modal-btn.secondary {
+      background: rgba(148, 163, 184, 0.25);
+      color: #334155;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+    }
+
+    .skill-modal-btn.secondary:hover {
+      transform: translateY(-1px);
+      background: rgba(148, 163, 184, 0.35);
+    }
+
+    .skill-modal-btn.primary {
+      background: #2563eb;
+      color: #f8fafc;
+      box-shadow: 0 20px 36px -28px rgba(37, 99, 235, 0.75);
+    }
+
+    .skill-modal-btn.primary:hover {
+      transform: translateY(-1px);
+      background: #1d4ed8;
+    }
+
+    @keyframes modalBackdropIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes skillModalIn {
+      from {
+        transform: translateY(12px) scale(0.97);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+    }
+
+    textarea.reset-flash {
+      animation: resetFlash 0.8s ease;
+    }
+
+    @keyframes resetFlash {
+      0% {
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.35);
+      }
+      50% {
+        box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.18);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+      }
+    }
+
+    @media (max-width: 960px) {
+      main {
+        grid-template-columns: 100%;
+      }
+
+      .section-nav {
+        position: static;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page-head {
+        padding: 2.4rem 1.05rem 1.75rem;
+      }
+
+      main {
+        padding-inline: 1rem;
+      }
+
+      .section-nav {
+        padding: 1.35rem;
+      }
+
+      .nav-note {
+        flex-direction: column;
+        gap: 0.65rem;
+      }
+
+      .nav-list {
+        gap: 0.6rem;
+      }
+
+      .nav-btn {
+        flex: 1 1 auto;
+        padding: 0.8rem 0.7rem;
+      }
+
+      .nav-btn-main {
+        gap: 0.7rem;
+      }
+
+      .nav-btn-arrow {
+        display: none;
+      }
+
+      textarea {
+        min-height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="page-head">
+  <h1>Quản lý nội dung hồ sơ</h1>
+    <button type="button" class="guide-toggle" aria-expanded="false" aria-controls="page-guide">
+  <span class="guide-toggle-icon target-file-icon" aria-hidden="true"><i class="fa-solid fa-file-code"></i></span>
+      <span class="guide-toggle-label">Xem hướng dẫn</span>
+      <span class="guide-toggle-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-down"></i></span>
+    </button>
+    <div id="page-guide" class="guide-panel" hidden>
+      <p>Thao tác nhanh để cập nhật nội dung hồ sơ:</p>
+      <ol class="guide-steps">
+        <li>Chọn mục cần chỉnh trong cột điều hướng bên trái để mở đúng khối nội dung.</li>
+        <li>Thay thế các phần nằm trong dấu [[...]] bằng thông tin mới của bạn, giữ nguyên cấu trúc HTML xung quanh.</li>
+        <li>Sử dụng các nút “Thêm” hoặc “Xóa” (nếu có) để bổ sung hoặc loại bỏ mục trong danh sách mà không cần tự viết lại thẻ.</li>
+        <li>Nhấn “Sao chép” để lấy đoạn HTML đã chỉnh sửa và dán vào file đích tương ứng ở phía website chính.</li>
+      </ol>
+      <p class="guide-note">Mẹo: Sau khi dán, nên xem lại trang hiển thị thực tế để chắc chắn định dạng và nội dung lên đúng như mong muốn.</p>
+    </div>
+  </header>
+  <main>
+    <aside class="section-nav" aria-label="Chọn phần cần chỉnh sửa">
+      <div class="nav-head">
+        <span class="nav-kicker">Bảng điều hướng</span>
+        <h2>Chọn khu vực</h2>
+        <div class="nav-note">
+          <span class="nav-note-icon" aria-hidden="true">i</span>
+          <p class="nav-note-text">Nhấp từng mục để hiển thị nội dung tương ứng. Sau khi chỉnh sửa, dùng nút ở cuối khối để sao chép đoạn HTML sạch và dán vào file đích.</p>
+        </div>
+      </div>
+      <ul class="nav-list">
+        <li>
+          <button type="button" class="nav-btn is-active" data-section="intro" aria-controls="panel-intro">
+            <span class="nav-btn-main">
+              <span class="nav-btn-order">01</span>
+              <span class="nav-btn-label">Giới thiệu</span>
+            </span>
+            <span class="nav-btn-arrow" aria-hidden="true">></span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="nav-btn" data-section="experience" aria-controls="panel-experience">
+            <span class="nav-btn-main">
+              <span class="nav-btn-order">02</span>
+              <span class="nav-btn-label">Kinh nghiệm</span>
+            </span>
+            <span class="nav-btn-arrow" aria-hidden="true">></span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="nav-btn" data-section="projects" aria-controls="panel-projects">
+            <span class="nav-btn-main">
+              <span class="nav-btn-order">03</span>
+              <span class="nav-btn-label">Dự án</span>
+            </span>
+            <span class="nav-btn-arrow" aria-hidden="true">></span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="nav-btn" data-section="education" aria-controls="panel-education">
+            <span class="nav-btn-main">
+              <span class="nav-btn-order">04</span>
+              <span class="nav-btn-label">Học vấn</span>
+            </span>
+            <span class="nav-btn-arrow" aria-hidden="true">></span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="nav-btn" data-section="skills" aria-controls="panel-skills">
+            <span class="nav-btn-main">
+              <span class="nav-btn-order">05</span>
+              <span class="nav-btn-label">Kỹ năng</span>
+            </span>
+            <span class="nav-btn-arrow" aria-hidden="true">></span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="nav-btn" data-section="certificates" aria-controls="panel-certificates">
+            <span class="nav-btn-main">
+              <span class="nav-btn-order">06</span>
+              <span class="nav-btn-label">Chứng chỉ</span>
+            </span>
+            <span class="nav-btn-arrow" aria-hidden="true">></span>
+          </button>
+        </li>
+      </ul>
+    </aside>
+    <div class="section-content">
+      <section id="panel-intro" class="admin-block is-active" data-section="intro" data-target="gioi_thieu.html" aria-hidden="false">
+        <div class="admin-content">
+          <div class="block-head">
+            <div class="block-title">
+              <span class="block-badge">Snippet</span>
+              <h2>Giới thiệu</h2>
+            </div>
+            <div class="target-file" role="group" aria-label="File đích">
+              <span class="target-file-icon" aria-hidden="true"><i class="fa-solid fa-file-code"></i></span>
+              <div class="target-file-meta">
+                <span class="target-file-label">File đích</span>
+                <code class="target-file-name">gioi_thieu.html</code>
+              </div>
+            </div>
+          </div>
+          <p class="hint">Điền thông tin tổng quan, mục tiêu và dữ liệu ảnh đại diện. Giữ nguyên cấu trúc, chỉ thay nội dung nằm trong [[...]].</p>
+          <textarea id="snippet-intro" spellcheck="false"><section id="intro" class="section intro-goals" aria-label="Giới thiệu">
+  <div class="container intro-goals-wrap">
+    <div class="intro-goals-content" data-ani="fade-up" data-order="1">
+      <span class="intro-tag">[[Nhãn nhỏ giới thiệu]]</span>
+      <h1 class="intro-title">[[Tiêu đề nổi bật]]</h1>
+      <p class="intro-lead">[[Đoạn giới thiệu ngắn gọn về bản thân và mục tiêu chung.]]</p>
+      <div class="goal-grid">
+        <section class="goal-card short" aria-labelledby="goal-short-title">
+          <header class="goal-head">
+            <span class="goal-icon" aria-hidden="true"><i class="fa-solid fa-bolt"></i></span>
+            <h2 id="goal-short-title">[[Tiêu đề mục tiêu ngắn hạn]]</h2>
+          </header>
+          <ul class="goal-list">
+            <li>[[Mục tiêu ngắn hạn #1]]</li>
+            <li>[[Mục tiêu ngắn hạn #2]]</li>
+            <li>[[Mục tiêu ngắn hạn #3]]</li>
+          </ul>
+        </section>
+        <section class="goal-card long" aria-labelledby="goal-long-title">
+          <header class="goal-head">
+            <span class="goal-icon" aria-hidden="true"><i class="fa-solid fa-chart-line"></i></span>
+            <h2 id="goal-long-title">[[Tiêu đề mục tiêu dài hạn]]</h2>
+          </header>
+          <ul class="goal-list">
+            <li>[[Mục tiêu dài hạn #1]]</li>
+            <li>[[Mục tiêu dài hạn #2]]</li>
+            <li>[[Mục tiêu dài hạn #3]]</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+    <figure class="intro-goals-media" data-ani="fade-up" data-order="2">
+      <div class="pc-card-wrapper intro-profile-card" data-profile-card>
+        <section class="pc-card" aria-labelledby="intro-profile-name">
+          <div class="pc-inside">
+            <div class="pc-shine"></div>
+            <div class="pc-glare"></div>
+            <div class="pc-content pc-avatar-content">
+              <img
+                class="avatar"
+                src="[[Đường dẫn ảnh đại diện]]"
+                alt="[[Tên hiển thị trên ảnh]]"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div class="pc-content"></div>
+          </div>
+        </section>
+      </div>
+      <figcaption>[[Chú thích ngắn cho ảnh giới thiệu.]]</figcaption>
+    </figure>
+  </div>
+</section></textarea>
+          <div class="button-row">
+            <button type="button" class="action-btn add-goal-btn" data-target="snippet-intro" data-add-goal="short" data-toast="Đã thêm mục tiêu ngắn hạn mới.">Thêm mục tiêu ngắn hạn</button>
+            <button type="button" class="action-btn add-goal-btn" data-target="snippet-intro" data-add-goal="long" data-toast="Đã thêm mục tiêu dài hạn mới.">Thêm mục tiêu dài hạn</button>
+            <button type="button" class="action-btn delete-btn" data-target="snippet-intro" data-remove-goal="short" data-toast="Đã xóa mục tiêu ngắn hạn.">Xóa mục tiêu ngắn hạn</button>
+            <button type="button" class="action-btn delete-btn" data-target="snippet-intro" data-remove-goal="long" data-toast="Đã xóa mục tiêu dài hạn.">Xóa mục tiêu dài hạn</button>
+            <button type="button" class="action-btn reset-btn" data-reset="snippet-intro" data-toast="Đã khôi phục nội dung gốc.">Khôi phục mẫu</button>
+            <button type="button" class="action-btn copy-btn" data-copy="snippet-intro" data-toast="Đã sao chép đoạn HTML!">Sao chép</button>
+            <span class="status" data-status-for="snippet-intro">Đã sao chép!</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-experience" class="admin-block" data-section="experience" data-target="kinh_nghiem.html" aria-hidden="true">
+        <div class="admin-content">
+          <div class="block-head">
+            <div class="block-title">
+              <span class="block-badge">Snippet</span>
+              <h2>Kinh nghiệm</h2>
+            </div>
+            <div class="target-file" role="group" aria-label="File đích">
+              <span class="target-file-icon" aria-hidden="true"><i class="fa-solid fa-file-code"></i></span>
+              <div class="target-file-meta">
+                <span class="target-file-label">File đích</span>
+                <code class="target-file-name">kinh_nghiem.html</code>
+              </div>
+            </div>
+          </div>
+          <p class="hint">Cập nhật thời gian làm việc, chức danh, địa điểm và danh sách nhiệm vụ. Thêm hoặc bớt &lt;li&gt; nếu cần.</p>
+          <textarea id="snippet-experience" spellcheck="false"><article class="exp-card" aria-labelledby="exp1-role" itemscope itemtype="https://schema.org/Organization">
+  <header class="exp-head">
+    <div class="exp-period" aria-label="Thời gian làm việc"><span>[[Năm bắt đầu]]</span><span class="sep">–</span><span>[[Năm kết thúc hoặc Hiện tại]]</span></div>
+    <div class="exp-meta">
+      <h3 id="exp1-role" class="exp-role" itemprop="employee" aria-label="Chức danh">[[Chức danh]]</h3>
+      <div class="exp-company-line">
+        <span class="exp-company" itemprop="name">[[Tên công ty]]</span>
+        <span class="exp-location"><i class="fa-solid fa-location-dot"></i> [[Địa điểm làm việc]]</span>
+      </div>
+      <ul class="exp-tags" aria-label="Thông tin cơ bản">
+        <li><i class="fa-regular fa-id-card"></i> [[Hình thức làm việc]]</li>
+        <li><i class="fa-solid fa-industry"></i> [[Lĩnh vực hoạt động]]</li>
+        <li><i class="fa-solid fa-microchip"></i> [[Công nghệ chính hoặc ghi chú khác]]</li>
+      </ul>
+    </div>
+  </header>
+  <div class="exp-body">
+    <p class="exp-summary">[[Mô tả ngắn về vai trò và phạm vi công việc.]]</p>
+    <ul class="exp-points" aria-label="Nhiệm vụ chính">
+      <li>[[Nhiệm vụ nổi bật #1]]</li>
+      <li>[[Nhiệm vụ nổi bật #2]]</li>
+      <li>[[Nhiệm vụ nổi bật #3]]</li>
+      <li>[[Nhiệm vụ nổi bật #4]]</li>
+      <li>[[Nhiệm vụ nổi bật #5]]</li>
+    </ul>
+    <div class="exp-tech"><span class="chip">[[Từ khóa kỹ thuật #1]]</span><span class="chip">[[Từ khóa kỹ thuật #2]]</span><span class="chip">[[Từ khóa kỹ thuật #3]]</span><span class="chip">[[Từ khóa kỹ thuật #4]]</span></div>
+  </div>
+</article></textarea>
+          <div class="button-row">
+            <button type="button" class="action-btn add-goal-btn" data-target="snippet-experience" data-add-experience="task" data-toast="Đã thêm nhiệm vụ nổi bật mới.">Thêm nhiệm vụ nổi bật</button>
+            <button type="button" class="action-btn add-goal-btn" data-target="snippet-experience" data-add-experience="keyword" data-toast="Đã thêm từ khóa kỹ thuật mới.">Thêm từ khóa kỹ thuật</button>
+            <button type="button" class="action-btn delete-btn" data-target="snippet-experience" data-remove-experience="task" data-toast="Đã xóa nhiệm vụ nổi bật.">Xóa nhiệm vụ nổi bật</button>
+            <button type="button" class="action-btn delete-btn" data-target="snippet-experience" data-remove-experience="keyword" data-toast="Đã xóa từ khóa kỹ thuật.">Xóa từ khóa kỹ thuật</button>
+            <button type="button" class="action-btn reset-btn" data-reset="snippet-experience" data-toast="Đã khôi phục nội dung gốc.">Khôi phục mẫu</button>
+            <button type="button" class="action-btn copy-btn" data-copy="snippet-experience" data-toast="Đã sao chép đoạn HTML!">Sao chép</button>
+            <span class="status" data-status-for="snippet-experience">Đã sao chép!</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-projects" class="admin-block" data-section="projects" data-target="du_an.html" aria-hidden="true">
+        <div class="admin-content">
+          <div class="block-head">
+            <div class="block-title">
+              <span class="block-badge">Snippet</span>
+              <h2>Dự án</h2>
+            </div>
+            <div class="target-file" role="group" aria-label="File đích">
+              <span class="target-file-icon" aria-hidden="true"><i class="fa-solid fa-file-code"></i></span>
+              <div class="target-file-meta">
+                <span class="target-file-label">File đích</span>
+                <code class="target-file-name">du_an.html</code>
+              </div>
+            </div>
+          </div>
+          <p class="hint">Điền tên dự án, media, thời gian và kết quả. Nếu có nhiều dự án, nhân bản cả khối &lt;article&gt; này.</p>
+          <textarea id="snippet-project" spellcheck="false"><article class="project-detail is-active mobile-media-only" data-proj-item aria-labelledby="proj1-title" aria-hidden="false">
+  <div class="proj-media">
+    <img src="[[Đường dẫn hình ảnh đại diện dự án]]" alt="[[Chú thích ảnh dự án]]" loading="eager" fetchpriority="high" decoding="async" />
+  </div>
+  <div class="proj-content">
+    <header class="proj-head">
+      <h3 id="proj1-title">[[Tên dự án]]</h3>
+      <ul class="proj-meta">
+        <li><i class="fa-regular fa-calendar"></i>[[Thời gian thực hiện]]</li>
+        <li><i class="fa-solid fa-location-dot"></i>[[Địa điểm triển khai]]</li>
+        <li><i class="fa-solid fa-user"></i>Vai trò: [[Vai trò của bạn]]</li>
+      </ul>
+    </header>
+    <p class="proj-summary">[[Tóm tắt mục tiêu và phạm vi dự án.]]</p>
+    <ul class="proj-resp">
+      <li>[[Nhiệm vụ chính #1]]</li>
+      <li>[[Nhiệm vụ chính #2]]</li>
+      <li>[[Nhiệm vụ chính #3]]</li>
+      <li>[[Nhiệm vụ chính #4]]</li>
+    </ul>
+    <div class="proj-outcome"><strong>Kết quả:</strong> [[Kết quả hoặc tác động chính.]]</div>
+    <div class="tech-tags"><span class="chip">[[Từ khóa dự án #1]]</span><span class="chip">[[Từ khóa dự án #2]]</span><span class="chip">[[Từ khóa dự án #3]]</span><span class="chip">[[Từ khóa dự án #4]]</span></div>
+    <div class="proj-actions">
+      <button type="button" class="btn small album-btn" data-allow-dup data-album='[["Đường dẫn hình 1","Đường dẫn hình 2"]]'>Xem Album</button>
+      <button type="button" class="btn small video-btn" data-videos='[["Đường dẫn video 1"]]'>Xem Video</button>
+    </div>
+  </div>
+</article></textarea>
+          <div class="button-row">
+            <button type="button" class="action-btn add-goal-btn" data-target="snippet-project" data-add-project="task" data-toast="Đã thêm nhiệm vụ chính mới.">Thêm nhiệm vụ chính</button>
+            <button type="button" class="action-btn add-goal-btn" data-target="snippet-project" data-add-project="keyword" data-toast="Đã thêm từ khóa dự án mới.">Thêm từ khóa dự án</button>
+            <button type="button" class="action-btn delete-btn" data-target="snippet-project" data-remove-project="task" data-toast="Đã xóa nhiệm vụ chính.">Xóa nhiệm vụ chính</button>
+            <button type="button" class="action-btn delete-btn" data-target="snippet-project" data-remove-project="keyword" data-toast="Đã xóa từ khóa dự án.">Xóa từ khóa dự án</button>
+            <button type="button" class="action-btn reset-btn" data-reset="snippet-project" data-toast="Đã khôi phục nội dung gốc.">Khôi phục mẫu</button>
+            <button type="button" class="action-btn copy-btn" data-copy="snippet-project" data-toast="Đã sao chép đoạn HTML!">Sao chép</button>
+            <span class="status" data-status-for="snippet-project">Đã sao chép!</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-education" class="admin-block" data-section="education" data-target="hoc_van.html" aria-hidden="true">
+        <div class="admin-content">
+          <div class="block-head">
+            <div class="block-title">
+              <span class="block-badge">Snippet</span>
+              <h2>Học vấn</h2>
+            </div>
+            <div class="target-file" role="group" aria-label="File đích">
+              <span class="target-file-icon" aria-hidden="true"><i class="fa-solid fa-file-code"></i></span>
+              <div class="target-file-meta">
+                <span class="target-file-label">File đích</span>
+                <code class="target-file-name">hoc_van.html</code>
+              </div>
+            </div>
+          </div>
+          <p class="hint">Thay các thông tin về chương trình đào tạo, học phần, tóm tắt và từ khóa. Có thể thêm khối &lt;details&gt; khác nếu cần.</p>
+          <textarea id="snippet-education" spellcheck="false"><article class="edu-item degree alt-left" aria-labelledby="deg-title" aria-describedby="deg-basic">
+  <header class="edu-head">
+    <div class="edu-top-line">
+      <span class="edu-period" aria-label="Thời gian học">[[Thời gian học]]</span>
+      <span class="edu-location" aria-label="Vị trí trường">[[Địa điểm trường]]</span>
+    </div>
+    <h3 id="deg-title" class="edu-title">
+      <span class="edu-degree">[[Bậc đào tạo]]</span>
+      <span class="edu-major">[[Chuyên ngành]]</span>
+    </h3>
+    <div id="deg-basic" class="edu-basic" aria-labelledby="deg-title">
+      <div class="eb-grid" aria-label="Thông tin chính bằng lưới">
+        <div class="eb-item">
+          <span class="eb-ico" aria-hidden="true"><i class="fa-solid fa-school"></i></span>
+          <div class="eb-meta">
+            <span class="eb-label">Trường</span>
+            <span class="eb-val">[[Tên trường]]</span>
+          </div>
+        </div>
+        <div class="eb-item">
+          <span class="eb-ico" aria-hidden="true"><i class="fa-solid fa-ranking-star"></i></span>
+          <div class="eb-meta">
+            <span class="eb-label">Xếp loại</span>
+            <span class="eb-val">[[Xếp loại tốt nghiệp]]</span>
+          </div>
+        </div>
+        <div class="eb-item">
+          <span class="eb-ico" aria-hidden="true"><i class="fa-solid fa-chart-simple"></i></span>
+          <div class="eb-meta">
+            <span class="eb-label">GPA</span>
+            <span class="eb-val">[[Điểm trung bình]]</span>
+          </div>
+        </div>
+        <div class="eb-item">
+          <span class="eb-ico" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></span>
+          <div class="eb-meta">
+            <span class="eb-label">Hình thức</span>
+            <span class="eb-val">[[Hình thức đào tạo]]</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <details class="edu-collapse">
+    <summary class="ec-head" aria-label="Mở/thu gọn chi tiết chương trình">
+      <span class="ec-title">Chi tiết chương trình</span>
+      <span class="ec-meta">[[Tổng quan số khối học, tóm tắt, số từ khóa]]</span>
+      <span class="ec-caret" aria-hidden="true"></span>
+    </summary>
+    <div class="edu-body">
+      <div class="edu-block" aria-label="Học phần cốt lõi">
+        <h4 class="eb-head">[[Tiêu đề khối học #1]]</h4>
+        <ul class="eb-list">
+          <li>[[Môn tiêu biểu 1]]</li>
+          <li>[[Môn tiêu biểu 2]]</li>
+          <li>[[Môn tiêu biểu 3]]</li>
+          <li>[[Môn tiêu biểu 4]]</li>
+          <li>[[Môn tiêu biểu 5]]</li>
+        </ul>
+      </div>
+      <div class="edu-block" aria-label="Thực hành & dự án nhỏ">
+        <h4 class="eb-head">[[Tiêu đề khối học #2]]</h4>
+        <ul class="eb-list">
+          <li>[[Hoạt động thực hành 1]]</li>
+          <li>[[Hoạt động thực hành 2]]</li>
+          <li>[[Hoạt động thực hành 3]]</li>
+          <li>[[Hoạt động thực hành 4]]</li>
+          <li>[[Hoạt động thực hành 5]]</li>
+        </ul>
+      </div>
+      <div class="edu-summary" aria-label="Tóm tắt chương trình">
+        <p><strong>Tóm tắt:</strong> [[Đoạn mô tả nhấn mạnh năng lực đạt được.]]</p>
+      </div>
+      <ul class="edu-tags" aria-label="Từ khoá chính">
+        <li>[[Từ khóa #1]]</li>
+        <li>[[Từ khóa #2]]</li>
+        <li>[[Từ khóa #3]]</li>
+        <li>[[Từ khóa #4]]</li>
+        <li>[[Từ khóa #5]]</li>
+        <li>[[Từ khóa #6]]</li>
+      </ul>
+    </div>
+  </details>
+          </article></textarea>
+          <div class="button-row">
+            <button type="button" class="action-btn add-goal-btn" data-target="snippet-education" data-add-education="block" data-toast="Đã thêm khối học mới.">Thêm khối học</button>
+            <button type="button" class="action-btn add-goal-btn" data-target="snippet-education" data-add-education="course" data-toast="Đã thêm môn tiêu biểu mới.">Thêm môn tiêu biểu</button>
+            <button type="button" class="action-btn add-goal-btn" data-target="snippet-education" data-add-education="practice" data-toast="Đã thêm hoạt động thực hành mới.">Thêm hoạt động thực hành</button>
+            <button type="button" class="action-btn add-goal-btn" data-target="snippet-education" data-add-education="keyword" data-toast="Đã thêm từ khóa học vấn mới.">Thêm từ khóa</button>
+            <button type="button" class="action-btn delete-btn" data-target="snippet-education" data-remove-education="block" data-toast="Đã xóa khối học.">Xóa khối học</button>
+            <button type="button" class="action-btn delete-btn" data-target="snippet-education" data-remove-education="course" data-toast="Đã xóa môn tiêu biểu.">Xóa môn tiêu biểu</button>
+            <button type="button" class="action-btn delete-btn" data-target="snippet-education" data-remove-education="practice" data-toast="Đã xóa hoạt động thực hành.">Xóa hoạt động thực hành</button>
+            <button type="button" class="action-btn delete-btn" data-target="snippet-education" data-remove-education="keyword" data-toast="Đã xóa từ khóa.">Xóa từ khóa</button>
+            <button type="button" class="action-btn reset-btn" data-reset="snippet-education" data-toast="Đã khôi phục nội dung gốc.">Khôi phục mẫu</button>
+            <button type="button" class="action-btn copy-btn" data-copy="snippet-education" data-toast="Đã sao chép đoạn HTML!">Sao chép</button>
+            <span class="status" data-status-for="snippet-education">Đã sao chép!</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-skills" class="admin-block" data-section="skills" data-target="ky_nang.html" aria-hidden="true">
+        <div class="admin-content">
+          <div class="block-head">
+            <div class="block-title">
+              <span class="block-badge">Snippet</span>
+              <h2>Kỹ năng</h2>
+            </div>
+            <div class="target-file" role="group" aria-label="File đích">
+              <span class="target-file-icon" aria-hidden="true"><i class="fa-solid fa-file-code"></i></span>
+              <div class="target-file-meta">
+                <span class="target-file-label">File đích</span>
+                <code class="target-file-name">ky_nang.html</code>
+              </div>
+            </div>
+          </div>
+          <p class="hint">Mỗi &lt;li class="skill-item"&gt; là một kỹ năng. Điều chỉnh data-level (0-100), nhãn cấp độ và mô tả. Nhân bản khi cần thêm.</p>
+          <textarea id="snippet-skill" spellcheck="false"><div class="skill-groups" aria-label="Nhóm kỹ năng">
+  <div class="skill-group" aria-label="[[Tên nhóm kỹ năng #1]]">
+    <h3>[[Tên nhóm kỹ năng #1]]</h3>
+    <ul class="skill-list">
+      <li class="skill-item" data-level="[[Mức %]]" style="--val:[[Mức %]]" aria-label="[[Tên kỹ năng]] [[Mức %]]%">
+        <div class="skill-top">
+          <div class="skill-name"><i class="[[Icon FontAwesome]]"></i><span>[[Tên kỹ năng]]</span></div>
+          <span class="skill-level-label">[[Xếp hạng (A/B/C)]]</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill"></div></div>
+        <p class="skill-desc">[[Mô tả ngắn về kỹ năng]].</p>
+      </li>
+      <li class="skill-item" data-level="[[Mức % khác]]" style="--val:[[Mức % khác]]" aria-label="[[Tên kỹ năng khác]] [[Mức % khác]]%">
+        <div class="skill-top">
+          <div class="skill-name"><i class="[[Icon FontAwesome]]"></i><span>[[Tên kỹ năng khác]]</span></div>
+          <span class="skill-level-label">[[Xếp hạng]]</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill"></div></div>
+        <p class="skill-desc">[[Mô tả ngắn khác]].</p>
+      </li>
+    </ul>
+  </div>
+  <div class="skill-group" aria-label="[[Tên nhóm kỹ năng #2]]">
+    <h3>[[Tên nhóm kỹ năng #2]]</h3>
+    <ul class="skill-list">
+      <li class="skill-item" data-level="[[Mức %]]" style="--val:[[Mức %]]" aria-label="[[Tên kỹ năng]] [[Mức %]]%">
+        <div class="skill-top">
+          <div class="skill-name"><i class="[[Icon FontAwesome]]"></i><span>[[Tên kỹ năng]]</span></div>
+          <span class="skill-level-label">[[Xếp hạng]]</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill"></div></div>
+        <p class="skill-desc">[[Mô tả kỹ năng]].</p>
+      </li>
+      <li class="skill-item" data-level="[[Mức % khác]]" style="--val:[[Mức % khác]]" aria-label="[[Tên kỹ năng khác]] [[Mức % khác]]%">
+        <div class="skill-top">
+          <div class="skill-name"><i class="[[Icon FontAwesome]]"></i><span>[[Tên kỹ năng khác]]</span></div>
+          <span class="skill-level-label">[[Xếp hạng]]</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill"></div></div>
+        <p class="skill-desc">[[Mô tả kỹ năng khác]].</p>
+      </li>
+    </ul>
+  </div>
+        </div></textarea>
+          <div class="button-row">
+            <button type="button" class="action-btn add-goal-btn" data-target="snippet-skill" data-add-skill="group" data-toast="Đã thêm nhóm kỹ năng mới.">Thêm nhóm kỹ năng</button>
+            <button type="button" class="action-btn add-goal-btn" data-target="snippet-skill" data-add-skill="item" data-toast="Đã thêm kỹ năng mới.">Thêm kỹ năng</button>
+            <button type="button" class="action-btn delete-btn" data-target="snippet-skill" data-remove-skill="item" data-toast="Đã xóa kỹ năng.">Xóa kỹ năng</button>
+            <button type="button" class="action-btn reset-btn" data-reset="snippet-skill" data-toast="Đã khôi phục nội dung gốc.">Khôi phục mẫu</button>
+            <button type="button" class="action-btn copy-btn" data-copy="snippet-skill" data-toast="Đã sao chép đoạn HTML!">Sao chép</button>
+            <span class="status" data-status-for="snippet-skill">Đã sao chép!</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-certificates" class="admin-block" data-section="certificates" data-target="chung-chi.html" aria-hidden="true">
+        <div class="admin-content">
+          <div class="block-head">
+            <div class="block-title">
+              <span class="block-badge">Snippet</span>
+              <h2>Chứng chỉ</h2>
+            </div>
+            <div class="target-file" role="group" aria-label="File đích">
+              <span class="target-file-icon" aria-hidden="true"><i class="fa-solid fa-file-code"></i></span>
+              <div class="target-file-meta">
+                <span class="target-file-label">File đích</span>
+                <code class="target-file-name">chung-chi.html</code>
+              </div>
+            </div>
+          </div>
+          <p class="hint">Điền thông tin chứng chỉ, nội dung trọng tâm và từ khóa. Thêm khối &lt;article&gt; mới cho mỗi chứng chỉ khác.</p>
+          <textarea id="snippet-certificate" spellcheck="false"><article class="edu-item cert alt-right" aria-labelledby="cert1-title" aria-describedby="cert1-basic">
+  <header class="edu-head">
+    <div class="edu-top-line">
+      <span class="edu-period" aria-label="Thời gian">[[Năm cấp chứng chỉ]]</span>
+      <span class="edu-location" aria-label="Nơi học">[[Địa điểm đào tạo]]</span>
+    </div>
+    <h3 id="cert1-title" class="edu-title">
+      <span class="cert-name">[[Tên chứng chỉ]]</span>
+      <span class="cert-renew">[[Trạng thái gia hạn (nếu có)]]</span>
+    </h3>
+    <div id="cert1-basic" class="edu-basic" role="text">
+      <span class="eb-label">Tổ chức:</span> [[Tên đơn vị cấp]] &nbsp;•&nbsp;
+      <span class="eb-label">Phạm vi:</span> [[Phạm vi / nội dung chính]]
+    </div>
+  </header>
+  <details class="edu-collapse">
+    <summary class="ec-head" aria-label="Mở/thu gọn nội dung chứng chỉ">
+      <span class="ec-title">Chi tiết chứng chỉ</span>
+      <span class="ec-meta">[[Số khối nội dung • Số trọng tâm]]</span>
+      <span class="ec-caret" aria-hidden="true"></span>
+    </summary>
+    <div class="edu-body">
+      <div class="edu-block" aria-label="Trọng tâm">
+        <h4 class="eb-head">Trọng tâm</h4>
+        <ul class="eb-list">
+          <li>[[Trọng tâm #1]]</li>
+          <li>[[Trọng tâm #2]]</li>
+          <li>[[Trọng tâm #3]]</li>
+          <li>[[Trọng tâm #4]]</li>
+        </ul>
+      </div>
+      <div class="edu-block" aria-label="Ứng dụng">
+        <h4 class="eb-head">Ứng dụng</h4>
+        <ul class="eb-list">
+          <li>[[Ứng dụng #1]]</li>
+          <li>[[Ứng dụng #2]]</li>
+          <li>[[Ứng dụng #3]]</li>
+        </ul>
+      </div>
+      <ul class="edu-tags" aria-label="Từ khoá chứng chỉ">
+        <li>[[Từ khóa #1]]</li>
+        <li>[[Từ khóa #2]]</li>
+        <li>[[Từ khóa #3]]</li>
+        <li>[[Từ khóa #4]]</li>
+      </ul>
+    </div>
+  </details>
+        </article></textarea>
+          <div class="button-row">
+            <button type="button" class="action-btn add-goal-btn" data-target="snippet-certificate" data-add-certificate="block" data-toast="Đã thêm khối nội dung mới.">Thêm khối nội dung</button>
+            <button type="button" class="action-btn add-goal-btn" data-target="snippet-certificate" data-add-certificate="focus" data-toast="Đã thêm trọng tâm mới.">Thêm Trọng tâm</button>
+            <button type="button" class="action-btn add-goal-btn" data-target="snippet-certificate" data-add-certificate="application" data-toast="Đã thêm ứng dụng mới.">Thêm Ứng dụng</button>
+            <button type="button" class="action-btn add-goal-btn" data-target="snippet-certificate" data-add-certificate="keyword" data-toast="Đã thêm từ khóa chứng chỉ mới.">Thêm Từ khóa</button>
+            <button type="button" class="action-btn delete-btn" data-target="snippet-certificate" data-remove-certificate="block" data-toast="Đã xóa khối nội dung.">Xóa khối nội dung</button>
+            <button type="button" class="action-btn delete-btn" data-target="snippet-certificate" data-remove-certificate="focus" data-toast="Đã xóa trọng tâm.">Xóa Trọng tâm</button>
+            <button type="button" class="action-btn delete-btn" data-target="snippet-certificate" data-remove-certificate="keyword" data-toast="Đã xóa từ khóa.">Xóa Từ khóa</button>
+            <button type="button" class="action-btn reset-btn" data-reset="snippet-certificate" data-toast="Đã khôi phục nội dung gốc.">Khôi phục mẫu</button>
+            <button type="button" class="action-btn copy-btn" data-copy="snippet-certificate" data-toast="Đã sao chép đoạn HTML!">Sao chép</button>
+            <span class="status" data-status-for="snippet-certificate">Đã sao chép!</span>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <div class="copy-toast" role="status" aria-live="polite" aria-atomic="true"></div>
+  <script>
+    const main = document.querySelector("main");
+    const sectionNav = document.querySelector(".section-nav");
+    const navButtons = Array.from(sectionNav?.querySelectorAll(".nav-btn") ?? []);
+    const panels = Array.from(document.querySelectorAll(".admin-block"));
+    const toast = document.querySelector(".copy-toast");
+    const textAreas = Array.from(document.querySelectorAll("textarea[id]"));
+    const defaultSnippets = new Map();
+    const statusTimers = new Map();
+    let toastTimer = 0;
+  let activeSkillModal = null;
+
+    const guideToggle = document.querySelector(".guide-toggle");
+    const guidePanel = document.getElementById("page-guide");
+    if (guideToggle instanceof HTMLButtonElement && guidePanel instanceof HTMLElement) {
+      const guideLabel = guideToggle.querySelector(".guide-toggle-label");
+      guideToggle.addEventListener("click", () => {
+        const isExpanded = guideToggle.getAttribute("aria-expanded") === "true";
+        const nextState = !isExpanded;
+        guideToggle.setAttribute("aria-expanded", String(nextState));
+        guidePanel.hidden = !nextState;
+        if (guideLabel instanceof HTMLElement) {
+          guideLabel.textContent = nextState ? "Ẩn hướng dẫn" : "Xem hướng dẫn";
+        }
+      });
+    }
+
+    textAreas.forEach((textarea) => {
+      if (textarea instanceof HTMLTextAreaElement) {
+        defaultSnippets.set(textarea.id, textarea.value);
+      }
+    });
+
+    const cleanPlaceholders = (rawText) => rawText.replace(/\[\[(.*?)\]\]/g, (match, inner) => inner.trim());
+
+    const showToast = (message) => {
+      if (!(toast instanceof HTMLElement)) {
+        return;
+      }
+      toast.textContent = message;
+      toast.classList.add("is-visible");
+      window.clearTimeout(toastTimer);
+      toastTimer = window.setTimeout(() => {
+        toast.classList.remove("is-visible");
+      }, 1600);
+    };
+
+    const triggerResetFlash = (textarea) => {
+      textarea.classList.remove("reset-flash");
+      void textarea.offsetWidth;
+      textarea.classList.add("reset-flash");
+      window.setTimeout(() => {
+        textarea.classList.remove("reset-flash");
+      }, 900);
+    };
+
+    const requestSkillGroupSelection = (totalGroups) => {
+      if (!Number.isInteger(totalGroups) || totalGroups <= 1) {
+        return Promise.resolve(0);
+      }
+      return new Promise((resolve) => {
+        if (activeSkillModal instanceof HTMLElement) {
+          activeSkillModal.remove();
+          activeSkillModal = null;
+        }
+        const overlay = document.createElement("div");
+        overlay.className = "skill-modal-backdrop";
+        overlay.innerHTML = `
+          <div class="skill-modal-panel" role="dialog" aria-modal="true" aria-labelledby="skill-modal-title">
+            <h3 id="skill-modal-title">Chọn nhóm kỹ năng</h3>
+            <p>Chọn nhóm mà bạn muốn thêm kỹ năng mới.</p>
+            <label class="skill-modal-label" for="skill-modal-select">Nhóm kỹ năng</label>
+            <select id="skill-modal-select" class="skill-modal-select"></select>
+            <div class="skill-modal-actions">
+              <button type="button" class="skill-modal-btn secondary" data-skill-modal-cancel>Hủy</button>
+              <button type="button" class="skill-modal-btn primary" data-skill-modal-confirm>Thêm</button>
+            </div>
+          </div>
+        `;
+
+        const selectEl = overlay.querySelector("#skill-modal-select");
+        if (!(selectEl instanceof HTMLSelectElement)) {
+          resolve(null);
+          return;
+        }
+        for (let index = 1; index <= totalGroups; index += 1) {
+          const option = document.createElement("option");
+          option.value = String(index);
+          option.textContent = `Nhóm ${index}`;
+          selectEl.append(option);
+        }
+        selectEl.value = String(totalGroups);
+
+        const confirmBtn = overlay.querySelector("[data-skill-modal-confirm]");
+        const cancelBtn = overlay.querySelector("[data-skill-modal-cancel]");
+        if (!(confirmBtn instanceof HTMLButtonElement) || !(cancelBtn instanceof HTMLButtonElement)) {
+          resolve(null);
+          return;
+        }
+
+        let resolved = false;
+        const cleanup = (result) => {
+          if (resolved) {
+            return;
+          }
+          resolved = true;
+          window.removeEventListener("keydown", handleKeyDown, true);
+          overlay.removeEventListener("click", handleOverlayClick);
+          overlay.remove();
+          document.body.classList.remove("skill-modal-open");
+          if (activeSkillModal === overlay) {
+            activeSkillModal = null;
+          }
+          resolve(result);
+        };
+
+        const handleSubmit = () => {
+          const selectedValue = Number.parseInt(selectEl.value, 10);
+          if (Number.isNaN(selectedValue)) {
+            cleanup(null);
+            return;
+          }
+          cleanup(selectedValue - 1);
+        };
+
+        const handleKeyDown = (event) => {
+          if (event.key === "Escape") {
+            event.preventDefault();
+            cleanup(null);
+          } else if (event.key === "Enter" && (event.target === selectEl || event.target === overlay)) {
+            event.preventDefault();
+            handleSubmit();
+          } else if ((event.key === "Enter" || event.key === " ") && event.target === confirmBtn) {
+            event.preventDefault();
+            handleSubmit();
+          }
+        };
+
+        const handleOverlayClick = (event) => {
+          if (event.target === overlay) {
+            cleanup(null);
+          }
+        };
+
+  confirmBtn.addEventListener("click", handleSubmit);
+  cancelBtn.addEventListener("click", () => cleanup(null));
+        overlay.addEventListener("click", handleOverlayClick);
+        window.addEventListener("keydown", handleKeyDown, true);
+
+        document.body.appendChild(overlay);
+        document.body.classList.add("skill-modal-open");
+        activeSkillModal = overlay;
+
+        window.requestAnimationFrame(() => {
+          selectEl.focus({ preventScroll: true });
+        });
+      });
+    };
+
+    const insertGoalItem = (textarea, goalType) => {
+      const value = textarea.value;
+      const isShort = goalType === "short";
+      const sectionMarker = isShort ? "goal-card short" : "goal-card long";
+      const placeholderLabel = isShort ? "Mục tiêu ngắn hạn" : "Mục tiêu dài hạn";
+      const sectionIndex = value.indexOf(sectionMarker);
+      if (sectionIndex === -1) {
+        return null;
+      }
+      const listStart = value.indexOf('<ul class="goal-list">', sectionIndex);
+      if (listStart === -1) {
+        return null;
+      }
+      const listEnd = value.indexOf("</ul>", listStart);
+      if (listEnd === -1) {
+        return null;
+      }
+      const pattern = new RegExp(String.raw`\[\[${placeholderLabel} #(\d+)\]\]`, "g");
+      let match;
+      let maxIndex = 0;
+      while ((match = pattern.exec(value)) !== null) {
+        const detected = Number.parseInt(match[1], 10);
+        if (!Number.isNaN(detected) && detected > maxIndex) {
+          maxIndex = detected;
+        }
+      }
+      const nextIndex = maxIndex + 1 || 1;
+      const insertionPoint = listEnd;
+      const segmentBeforeClosing = value.slice(0, insertionPoint);
+      const whitespaceMatch = segmentBeforeClosing.match(/(\r?\n)([ \t]*)$/);
+      const lineBreak = whitespaceMatch ? whitespaceMatch[1] : "\n";
+      const closingIndent = whitespaceMatch ? whitespaceMatch[2] : "";
+      const removalLength = whitespaceMatch ? whitespaceMatch[0].length : 0;
+      const liIndent = closingIndent ? `${closingIndent}  ` : "  ";
+      const beforeClosing = segmentBeforeClosing.slice(0, segmentBeforeClosing.length - removalLength);
+      const insertion = `${lineBreak}${liIndent}<li>[[${placeholderLabel} #${nextIndex}]]</li>`;
+      const closingPrefix = `${lineBreak}${closingIndent}`;
+      const updatedValue = `${beforeClosing}${insertion}${closingPrefix}${value.slice(insertionPoint)}`;
+      textarea.value = updatedValue;
+      const caretPosition = beforeClosing.length + insertion.length;
+      window.requestAnimationFrame(() => {
+        textarea.focus();
+        if (typeof textarea.setSelectionRange === "function") {
+          textarea.setSelectionRange(caretPosition, caretPosition);
+        }
+      });
+      return nextIndex;
+    };
+
+    const insertSkillGroup = (textarea) => {
+      const value = textarea.value;
+      const containerStart = value.indexOf('<div class="skill-groups"');
+      if (containerStart === -1) {
+        return null;
+      }
+      const containerEnd = value.lastIndexOf("</div>");
+      if (containerEnd === -1 || containerEnd <= containerStart) {
+        return null;
+      }
+      const pattern = /\[\[Tên nhóm kỹ năng #(\d+)\]\]/g;
+      let match;
+      let maxIndex = 0;
+      while ((match = pattern.exec(value)) !== null) {
+        const detected = Number.parseInt(match[1], 10);
+        if (!Number.isNaN(detected) && detected > maxIndex) {
+          maxIndex = detected;
+        }
+      }
+      const nextIndex = maxIndex + 1 || 1;
+      const segmentBeforeClosing = value.slice(0, containerEnd);
+      const whitespaceMatch = segmentBeforeClosing.match(/(\r?\n)([ \t]*)$/);
+      const lineBreak = whitespaceMatch ? whitespaceMatch[1] : "\n";
+      const indent = whitespaceMatch ? whitespaceMatch[2] : "";
+      const removalLength = whitespaceMatch ? whitespaceMatch[0].length : 0;
+      const beforeClosing = segmentBeforeClosing.slice(0, segmentBeforeClosing.length - removalLength);
+      const groupLines = [
+        `<div class="skill-group" aria-label="[[Tên nhóm kỹ năng #${nextIndex}]]">`,
+        `  <h3>[[Tên nhóm kỹ năng #${nextIndex}]]</h3>`,
+        `  <ul class="skill-list">`,
+        `    <li class="skill-item" data-level="[[Mức % mới]]" style="--val:[[Mức % mới]]" aria-label="[[Tên kỹ năng mới]] [[Mức % mới]]%">`,
+        `      <div class="skill-top">`,
+        `        <div class="skill-name"><i class="[[Icon FontAwesome]]"></i><span>[[Tên kỹ năng mới]]</span></div>`,
+        `        <span class="skill-level-label">[[Xếp hạng]]</span>`,
+        `      </div>`,
+        `      <div class="skill-bar"><div class="skill-fill"></div></div>`,
+        `      <p class="skill-desc">[[Mô tả kỹ năng mới]].</p>`,
+        `    </li>`,
+        `  </ul>`,
+        `</div>`
+      ];
+      const indentedLines = groupLines.map((line) => `${indent}${line}`);
+      const insertion = `${lineBreak}${indentedLines.join("\n")}`;
+      const closingPrefix = `${lineBreak}${indent}`;
+      const updatedValue = `${beforeClosing}${insertion}${closingPrefix}${value.slice(containerEnd)}`;
+      textarea.value = updatedValue;
+      const caretPosition = beforeClosing.length + insertion.length;
+      window.requestAnimationFrame(() => {
+        textarea.focus();
+        if (typeof textarea.setSelectionRange === "function") {
+          textarea.setSelectionRange(caretPosition, caretPosition);
+        }
+      });
+      return nextIndex;
+    };
+
+    const insertSkillItem = (textarea, groupIndex) => {
+      const value = textarea.value;
+      const listMatches = Array.from(value.matchAll(/<ul class="skill-list">/g));
+      if (listMatches.length === 0) {
+        return null;
+      }
+      const totalGroups = listMatches.length;
+      let targetGroup = Number.isInteger(groupIndex) ? groupIndex : totalGroups - 1;
+      if (targetGroup < 0 || targetGroup >= totalGroups) {
+        targetGroup = totalGroups - 1;
+      }
+      const listStart = listMatches[targetGroup].index ?? 0;
+      const listEnd = value.indexOf("</ul>", listStart);
+      if (listEnd === -1) {
+        return null;
+      }
+      const segmentBeforeClosing = value.slice(0, listEnd);
+      const whitespaceMatch = segmentBeforeClosing.match(/(\r?\n)([ \t]*)$/);
+      const lineBreak = whitespaceMatch ? whitespaceMatch[1] : "\n";
+      const closingIndent = whitespaceMatch ? whitespaceMatch[2] : "";
+      const removalLength = whitespaceMatch ? whitespaceMatch[0].length : 0;
+      const liIndent = closingIndent ? `${closingIndent}  ` : "  ";
+      const beforeClosing = segmentBeforeClosing.slice(0, segmentBeforeClosing.length - removalLength);
+      const currentListSegment = value.slice(listStart, listEnd);
+      const itemsInGroup = Array.from(currentListSegment.matchAll(/<li class="skill-item"[\s\S]*?<\/li>/g));
+      const groupItemIndex = itemsInGroup.length + 1;
+      const allItems = Array.from(value.matchAll(/<li class="skill-item"/g));
+      const overallIndex = allItems.length + 1;
+      const placeholderSuffix = `nhóm ${targetGroup + 1} #${groupItemIndex}`;
+      const liLines = [
+        `<li class="skill-item" data-level="[[Mức % ${placeholderSuffix}]]" style="--val:[[Mức % ${placeholderSuffix}]]" aria-label="[[Tên kỹ năng ${placeholderSuffix}]] [[Mức % ${placeholderSuffix}]]%">`,
+        `  <div class="skill-top">`,
+        `    <div class="skill-name"><i class="[[Icon FontAwesome]]"></i><span>[[Tên kỹ năng ${placeholderSuffix}]]</span></div>`,
+        `    <span class="skill-level-label">[[Xếp hạng ${placeholderSuffix}]]</span>`,
+        `  </div>`,
+  `  <div class="skill-bar"><div class="skill-fill"></div></div>`,
+        `  <p class="skill-desc">[[Mô tả kỹ năng ${placeholderSuffix}]].</p>`,
+        `</li>`
+      ];
+      const indentedLines = liLines.map((line) => `${liIndent}${line}`);
+      const insertion = `${lineBreak}${indentedLines.join("\n")}`;
+      const closingPrefix = `${lineBreak}${closingIndent}`;
+      const updatedValue = `${beforeClosing}${insertion}${closingPrefix}${value.slice(listEnd)}`;
+      textarea.value = updatedValue;
+      const caretPosition = beforeClosing.length + insertion.length;
+      window.requestAnimationFrame(() => {
+        textarea.focus();
+        if (typeof textarea.setSelectionRange === "function") {
+          textarea.setSelectionRange(caretPosition, caretPosition);
+        }
+      });
+      return {
+        overallIndex,
+        groupNumber: targetGroup + 1,
+        groupItemIndex
+      };
+    };
+
+    const removeSkillItem = (textarea) => {
+      const value = textarea.value;
+      const itemPattern = /<li class="skill-item"[\s\S]*?<\/li>/g;
+      const items = Array.from(value.matchAll(itemPattern));
+      if (items.length <= 1) {
+        return null;
+      }
+      const lastItem = items[items.length - 1];
+      const [itemText] = lastItem;
+      const startIndex = lastItem.index ?? 0;
+      const endIndex = startIndex + itemText.length;
+      const groupMatches = Array.from(value.matchAll(/<ul class="skill-list">/g));
+      let groupNumber = null;
+      let groupItemIndex = null;
+      for (let idx = 0; idx < groupMatches.length; idx += 1) {
+        const listStart = groupMatches[idx].index ?? 0;
+        const listEnd = value.indexOf("</ul>", listStart);
+        if (listEnd === -1) {
+          continue;
+        }
+        if (startIndex >= listStart && startIndex < listEnd) {
+          const groupSegment = value.slice(listStart, listEnd);
+          const groupItems = Array.from(groupSegment.matchAll(/<li class="skill-item"[\s\S]*?<\/li>/g));
+          groupNumber = idx + 1;
+          groupItemIndex = groupItems.length;
+          break;
+        }
+      }
+      const leadingWhitespaceMatch = value.slice(0, startIndex).match(/(\r?\n)([ \t]*)$/);
+      const removalStart = leadingWhitespaceMatch ? startIndex - leadingWhitespaceMatch[0].length : startIndex;
+      textarea.value = `${value.slice(0, removalStart)}${value.slice(endIndex)}`;
+      const placeholderMatch = itemText.match(/\[\[(.*?)\]\]/);
+      const label = placeholderMatch ? placeholderMatch[1] : "";
+      return {
+        label,
+        overallIndex: items.length,
+        groupNumber,
+        groupItemIndex
+      };
+    };
+
+    const removeGoalItem = (textarea, goalType) => {
+      const value = textarea.value;
+      const isShort = goalType === "short";
+      const sectionMarker = isShort ? "goal-card short" : "goal-card long";
+      const placeholderLabel = isShort ? "Mục tiêu ngắn hạn" : "Mục tiêu dài hạn";
+      const sectionIndex = value.indexOf(sectionMarker);
+      if (sectionIndex === -1) {
+        return null;
+      }
+      const listStart = value.indexOf('<ul class="goal-list">', sectionIndex);
+      if (listStart === -1) {
+        return null;
+      }
+      const listEnd = value.indexOf('</ul>', listStart);
+      if (listEnd === -1) {
+        return null;
+      }
+      const listSegment = value.slice(listStart, listEnd);
+      const items = Array.from(listSegment.matchAll(/<li>[\s\S]*?<\/li>/g));
+      if (items.length <= 1) {
+        return null;
+      }
+      const lastItem = items[items.length - 1];
+      const itemText = lastItem[0];
+      const itemRelativeIndex = lastItem.index ?? 0;
+      const itemAbsoluteStart = listStart + itemRelativeIndex;
+      const itemAbsoluteEnd = itemAbsoluteStart + itemText.length;
+      const leadingWhitespaceMatch = value.slice(0, itemAbsoluteStart).match(/(\r?\n)([ \t]*)$/);
+      const removalStart = leadingWhitespaceMatch ? itemAbsoluteStart - leadingWhitespaceMatch[0].length : itemAbsoluteStart;
+      textarea.value = `${value.slice(0, removalStart)}${value.slice(itemAbsoluteEnd)}`;
+      const placeholderPattern = new RegExp(`\\[\\[${placeholderLabel} #(\\d+)\\]\\]`);
+      const removedMatch = itemText.match(placeholderPattern);
+      return removedMatch ? Number.parseInt(removedMatch[1], 10) : null;
+    };
+
+    const insertProjectTask = (textarea) => {
+      const value = textarea.value;
+      const listStart = value.indexOf('<ul class="proj-resp"');
+      if (listStart === -1) {
+        return null;
+      }
+      const listEnd = value.indexOf("</ul>", listStart);
+      if (listEnd === -1) {
+        return null;
+      }
+      const pattern = /\[\[Nhiệm vụ chính #(\d+)\]\]/g;
+      let match;
+      let maxIndex = 0;
+      while ((match = pattern.exec(value)) !== null) {
+        const detected = Number.parseInt(match[1], 10);
+        if (!Number.isNaN(detected) && detected > maxIndex) {
+          maxIndex = detected;
+        }
+      }
+      const nextIndex = maxIndex + 1;
+      const insertionPoint = listEnd;
+      const segmentBeforeClosing = value.slice(0, insertionPoint);
+      const whitespaceMatch = segmentBeforeClosing.match(/(\r?\n)([ \t]*)$/);
+      const lineBreak = whitespaceMatch ? whitespaceMatch[1] : "\n";
+      const closingIndent = whitespaceMatch ? whitespaceMatch[2] : "";
+      const removalLength = whitespaceMatch ? whitespaceMatch[0].length : 0;
+      const liIndent = closingIndent ? `${closingIndent}  ` : "  ";
+      const beforeClosing = segmentBeforeClosing.slice(0, segmentBeforeClosing.length - removalLength);
+      const insertion = `${lineBreak}${liIndent}<li>[[Nhiệm vụ chính #${nextIndex}]]</li>`;
+      const closingPrefix = `${lineBreak}${closingIndent}`;
+      const updatedValue = `${beforeClosing}${insertion}${closingPrefix}${value.slice(insertionPoint)}`;
+      textarea.value = updatedValue;
+      const caretPosition = beforeClosing.length + insertion.length;
+      window.requestAnimationFrame(() => {
+        textarea.focus();
+        if (typeof textarea.setSelectionRange === "function") {
+          textarea.setSelectionRange(caretPosition, caretPosition);
+        }
+      });
+      return nextIndex;
+    };
+
+    const insertProjectKeyword = (textarea) => {
+      const value = textarea.value;
+      const divStart = value.indexOf('<div class="tech-tags"');
+      if (divStart === -1) {
+        return null;
+      }
+      const divEnd = value.indexOf("</div>", divStart);
+      if (divEnd === -1) {
+        return null;
+      }
+      const pattern = /\[\[Từ khóa dự án #(\d+)\]\]/g;
+      let match;
+      let maxIndex = 0;
+      while ((match = pattern.exec(value)) !== null) {
+        const detected = Number.parseInt(match[1], 10);
+        if (!Number.isNaN(detected) && detected > maxIndex) {
+          maxIndex = detected;
+        }
+      }
+      const nextIndex = maxIndex + 1;
+      const segmentBeforeClosing = value.slice(0, divEnd);
+      const whitespaceMatch = segmentBeforeClosing.match(/(\r?\n)([ \t]*)$/);
+      const afterClosing = value.slice(divEnd);
+      const insertionCore = `<span class="chip">[[Từ khóa dự án #${nextIndex}]]</span>`;
+      let updatedValue;
+      let caretPosition;
+      if (whitespaceMatch) {
+        const lineBreak = whitespaceMatch[1];
+        const indent = whitespaceMatch[2];
+        const removalLength = whitespaceMatch[0].length;
+        const beforeClosing = segmentBeforeClosing.slice(0, segmentBeforeClosing.length - removalLength);
+        const insertion = `${lineBreak}${indent}${insertionCore}`;
+        const closingPrefix = `${lineBreak}${indent}`;
+        updatedValue = `${beforeClosing}${insertion}${closingPrefix}${afterClosing}`;
+        caretPosition = beforeClosing.length + insertion.length;
+      } else {
+        const beforeClosing = segmentBeforeClosing;
+        updatedValue = `${beforeClosing}${insertionCore}${afterClosing}`;
+        caretPosition = beforeClosing.length + insertionCore.length;
+      }
+      textarea.value = updatedValue;
+      window.requestAnimationFrame(() => {
+        textarea.focus();
+        if (typeof textarea.setSelectionRange === "function") {
+          textarea.setSelectionRange(caretPosition, caretPosition);
+        }
+      });
+      return nextIndex;
+    };
+
+    const removeProjectTask = (textarea) => {
+      const value = textarea.value;
+      const listStart = value.indexOf('<ul class="proj-resp"');
+      if (listStart === -1) {
+        return null;
+      }
+      const listEnd = value.indexOf('</ul>', listStart);
+      if (listEnd === -1) {
+        return null;
+      }
+      const listSegment = value.slice(listStart, listEnd);
+      const items = Array.from(listSegment.matchAll(/<li>[\s\S]*?<\/li>/g));
+      if (items.length <= 1) {
+        return null;
+      }
+      const lastItem = items[items.length - 1];
+      const itemText = lastItem[0];
+      const itemRelativeIndex = lastItem.index ?? 0;
+      const itemAbsoluteStart = listStart + itemRelativeIndex;
+      const itemAbsoluteEnd = itemAbsoluteStart + itemText.length;
+      const leadingWhitespaceMatch = value.slice(0, itemAbsoluteStart).match(/(\r?\n)([ \t]*)$/);
+      const removalStart = leadingWhitespaceMatch ? itemAbsoluteStart - leadingWhitespaceMatch[0].length : itemAbsoluteStart;
+      textarea.value = `${value.slice(0, removalStart)}${value.slice(itemAbsoluteEnd)}`;
+      const removedMatch = itemText.match(/\[\[Nhiệm vụ chính #(\d+)\]\]/);
+      return removedMatch ? Number.parseInt(removedMatch[1], 10) : null;
+    };
+
+    const removeProjectKeyword = (textarea) => {
+      const value = textarea.value;
+      const divStart = value.indexOf('<div class="tech-tags"');
+      if (divStart === -1) {
+        return null;
+      }
+      const divEnd = value.indexOf('</div>', divStart);
+      if (divEnd === -1) {
+        return null;
+      }
+      const segment = value.slice(divStart, divEnd);
+      const chips = Array.from(segment.matchAll(/<span class="chip">[\s\S]*?<\/span>/g));
+      if (chips.length <= 1) {
+        return null;
+      }
+      const lastChip = chips[chips.length - 1];
+      const chipText = lastChip[0];
+      const chipRelativeIndex = lastChip.index ?? 0;
+      const chipAbsoluteStart = divStart + chipRelativeIndex;
+      const chipAbsoluteEnd = chipAbsoluteStart + chipText.length;
+      let removalStart = chipAbsoluteStart;
+      const beforeChip = value.slice(0, chipAbsoluteStart);
+      const leadingWhitespaceMatch = beforeChip.match(/(\r?\n)([ \t]*)$/);
+      if (leadingWhitespaceMatch) {
+        removalStart -= leadingWhitespaceMatch[0].length;
+      } else {
+        const trailingSpaces = beforeChip.match(/[ \t]+$/);
+        if (trailingSpaces) {
+          removalStart -= trailingSpaces[0].length;
+        }
+      }
+      textarea.value = `${value.slice(0, removalStart)}${value.slice(chipAbsoluteEnd)}`;
+      const removedMatch = chipText.match(/\[\[Từ khóa dự án #(\d+)\]\]/);
+      return removedMatch ? Number.parseInt(removedMatch[1], 10) : null;
+    };
+
+    const insertExperienceTask = (textarea) => {
+      const value = textarea.value;
+      const listStart = value.indexOf('<ul class="exp-points"');
+      if (listStart === -1) {
+        return null;
+      }
+      const listEnd = value.indexOf("</ul>", listStart);
+      if (listEnd === -1) {
+        return null;
+      }
+      const pattern = /\[\[Nhiệm vụ nổi bật #(\d+)\]\]/g;
+      let match;
+      let maxIndex = 0;
+      while ((match = pattern.exec(value)) !== null) {
+        const detected = Number.parseInt(match[1], 10);
+        if (!Number.isNaN(detected) && detected > maxIndex) {
+          maxIndex = detected;
+        }
+      }
+      const nextIndex = maxIndex + 1 || 1;
+      const segmentBeforeClosing = value.slice(0, listEnd);
+      const whitespaceMatch = segmentBeforeClosing.match(/(\r?\n)([ \t]*)$/);
+      const lineBreak = whitespaceMatch ? whitespaceMatch[1] : "\n";
+      const closingIndent = whitespaceMatch ? whitespaceMatch[2] : "";
+      const removalLength = whitespaceMatch ? whitespaceMatch[0].length : 0;
+      const liIndent = closingIndent ? `${closingIndent}  ` : "  ";
+      const beforeClosing = segmentBeforeClosing.slice(0, segmentBeforeClosing.length - removalLength);
+      const insertion = `${lineBreak}${liIndent}<li>[[Nhiệm vụ nổi bật #${nextIndex}]]</li>`;
+      const closingPrefix = `${lineBreak}${closingIndent}`;
+      const updatedValue = `${beforeClosing}${insertion}${closingPrefix}${value.slice(listEnd)}`;
+      textarea.value = updatedValue;
+      const caretPosition = beforeClosing.length + insertion.length;
+      window.requestAnimationFrame(() => {
+        textarea.focus();
+        if (typeof textarea.setSelectionRange === "function") {
+          textarea.setSelectionRange(caretPosition, caretPosition);
+        }
+      });
+      return nextIndex;
+    };
+
+    const insertExperienceKeyword = (textarea) => {
+      const value = textarea.value;
+      const divStart = value.indexOf('<div class="exp-tech"');
+      if (divStart === -1) {
+        return null;
+      }
+      const divEnd = value.indexOf("</div>", divStart);
+      if (divEnd === -1) {
+        return null;
+      }
+      const pattern = /\[\[Từ khóa kỹ thuật #(\d+)\]\]/g;
+      let match;
+      let maxIndex = 0;
+      while ((match = pattern.exec(value)) !== null) {
+        const detected = Number.parseInt(match[1], 10);
+        if (!Number.isNaN(detected) && detected > maxIndex) {
+          maxIndex = detected;
+        }
+      }
+      const nextIndex = maxIndex + 1 || 1;
+      const segmentBeforeClosing = value.slice(0, divEnd);
+      const whitespaceMatch = segmentBeforeClosing.match(/(\r?\n)([ \t]*)$/);
+      const afterClosing = value.slice(divEnd);
+      const insertionCore = `<span class="chip">[[Từ khóa kỹ thuật #${nextIndex}]]</span>`;
+      let updatedValue;
+      let caretPosition;
+      if (whitespaceMatch) {
+        const lineBreak = whitespaceMatch[1];
+        const indent = whitespaceMatch[2];
+        const removalLength = whitespaceMatch[0].length;
+        const beforeClosing = segmentBeforeClosing.slice(0, segmentBeforeClosing.length - removalLength);
+        const insertion = `${lineBreak}${indent}${insertionCore}`;
+        const closingPrefix = `${lineBreak}${indent}`;
+        updatedValue = `${beforeClosing}${insertion}${closingPrefix}${afterClosing}`;
+        caretPosition = beforeClosing.length + insertion.length;
+      } else {
+        const beforeClosing = segmentBeforeClosing;
+        const needsSpace = beforeClosing.endsWith(" ") ? "" : " ";
+        updatedValue = `${beforeClosing}${needsSpace}${insertionCore}${afterClosing}`;
+        caretPosition = beforeClosing.length + needsSpace.length + insertionCore.length;
+      }
+      textarea.value = updatedValue;
+      window.requestAnimationFrame(() => {
+        textarea.focus();
+        if (typeof textarea.setSelectionRange === "function") {
+          textarea.setSelectionRange(caretPosition, caretPosition);
+        }
+      });
+      return nextIndex;
+    };
+
+    const removeExperienceTask = (textarea) => {
+      const value = textarea.value;
+      const listStart = value.indexOf('<ul class="exp-points"');
+      if (listStart === -1) {
+        return null;
+      }
+      const listEnd = value.indexOf('</ul>', listStart);
+      if (listEnd === -1) {
+        return null;
+      }
+      const listSegment = value.slice(listStart, listEnd);
+      const items = Array.from(listSegment.matchAll(/<li>[\s\S]*?<\/li>/g));
+      if (items.length <= 1) {
+        return null;
+      }
+      const lastItem = items[items.length - 1];
+      const itemText = lastItem[0];
+      const itemRelativeIndex = lastItem.index ?? 0;
+      const itemAbsoluteStart = listStart + itemRelativeIndex;
+      const itemAbsoluteEnd = itemAbsoluteStart + itemText.length;
+      const leadingWhitespaceMatch = value.slice(0, itemAbsoluteStart).match(/(\r?\n)([ \t]*)$/);
+      const removalStart = leadingWhitespaceMatch ? itemAbsoluteStart - leadingWhitespaceMatch[0].length : itemAbsoluteStart;
+      textarea.value = `${value.slice(0, removalStart)}${value.slice(itemAbsoluteEnd)}`;
+      const removedMatch = itemText.match(/\[\[Nhiệm vụ nổi bật #(\d+)\]\]/);
+      return removedMatch ? Number.parseInt(removedMatch[1], 10) : null;
+    };
+
+    const removeExperienceKeyword = (textarea) => {
+      const value = textarea.value;
+      const divStart = value.indexOf('<div class="exp-tech"');
+      if (divStart === -1) {
+        return null;
+      }
+      const divEnd = value.indexOf('</div>', divStart);
+      if (divEnd === -1) {
+        return null;
+      }
+      const segment = value.slice(divStart, divEnd);
+      const chips = Array.from(segment.matchAll(/<span class="chip">[\s\S]*?<\/span>/g));
+      if (chips.length <= 1) {
+        return null;
+      }
+      const lastChip = chips[chips.length - 1];
+      const chipText = lastChip[0];
+      const chipRelativeIndex = lastChip.index ?? 0;
+      const chipAbsoluteStart = divStart + chipRelativeIndex;
+      const chipAbsoluteEnd = chipAbsoluteStart + chipText.length;
+      let removalStart = chipAbsoluteStart;
+      const beforeChip = value.slice(0, chipAbsoluteStart);
+      const leadingWhitespaceMatch = beforeChip.match(/(\r?\n)([ \t]*)$/);
+      if (leadingWhitespaceMatch) {
+        removalStart -= leadingWhitespaceMatch[0].length;
+      } else {
+        const trailingSpaces = beforeChip.match(/[ \t]+$/);
+        if (trailingSpaces) {
+          removalStart -= trailingSpaces[0].length;
+        }
+      }
+      textarea.value = `${value.slice(0, removalStart)}${value.slice(chipAbsoluteEnd)}`;
+      const removedMatch = chipText.match(/\[\[Từ khóa kỹ thuật #(\d+)\]\]/);
+      return removedMatch ? Number.parseInt(removedMatch[1], 10) : null;
+    };
+
+    const insertEducationCourse = (textarea) => {
+      const value = textarea.value;
+      const blockStart = value.indexOf('aria-label="Học phần cốt lõi"');
+      if (blockStart === -1) {
+        return null;
+      }
+      const listStart = value.indexOf('<ul class="eb-list">', blockStart);
+      if (listStart === -1) {
+        return null;
+      }
+      const listEnd = value.indexOf("</ul>", listStart);
+      if (listEnd === -1) {
+        return null;
+      }
+      const pattern = /\[\[Môn tiêu biểu ?#?(\d+)\]\]/g;
+      let match;
+      let maxIndex = 0;
+      while ((match = pattern.exec(value)) !== null) {
+        const detected = Number.parseInt(match[1], 10);
+        if (!Number.isNaN(detected) && detected > maxIndex) {
+          maxIndex = detected;
+        }
+      }
+      const nextIndex = maxIndex + 1 || 1;
+      const segmentBeforeClosing = value.slice(0, listEnd);
+      const whitespaceMatch = segmentBeforeClosing.match(/(\r?\n)([ \t]*)$/);
+      const lineBreak = whitespaceMatch ? whitespaceMatch[1] : "\n";
+      const closingIndent = whitespaceMatch ? whitespaceMatch[2] : "";
+      const removalLength = whitespaceMatch ? whitespaceMatch[0].length : 0;
+      const liIndent = closingIndent ? `${closingIndent}  ` : "  ";
+      const beforeClosing = segmentBeforeClosing.slice(0, segmentBeforeClosing.length - removalLength);
+      const insertion = `${lineBreak}${liIndent}<li>[[Môn tiêu biểu ${nextIndex}]]</li>`;
+      const closingPrefix = `${lineBreak}${closingIndent}`;
+      const updatedValue = `${beforeClosing}${insertion}${closingPrefix}${value.slice(listEnd)}`;
+      textarea.value = updatedValue;
+      const caretPosition = beforeClosing.length + insertion.length;
+      window.requestAnimationFrame(() => {
+        textarea.focus();
+        if (typeof textarea.setSelectionRange === "function") {
+          textarea.setSelectionRange(caretPosition, caretPosition);
+        }
+      });
+      return nextIndex;
+    };
+
+    const insertEducationPractice = (textarea) => {
+      const value = textarea.value;
+      const blockStart = value.indexOf('aria-label="Thực hành & dự án nhỏ"');
+      if (blockStart === -1) {
+        return null;
+      }
+      const listStart = value.indexOf('<ul class="eb-list">', blockStart);
+      if (listStart === -1) {
+        return null;
+      }
+      const listEnd = value.indexOf("</ul>", listStart);
+      if (listEnd === -1) {
+        return null;
+      }
+      const pattern = /\[\[Hoạt động thực hành ?#?(\d+)\]\]/g;
+      let match;
+      let maxIndex = 0;
+      while ((match = pattern.exec(value)) !== null) {
+        const detected = Number.parseInt(match[1], 10);
+        if (!Number.isNaN(detected) && detected > maxIndex) {
+          maxIndex = detected;
+        }
+      }
+      const nextIndex = maxIndex + 1 || 1;
+      const segmentBeforeClosing = value.slice(0, listEnd);
+      const whitespaceMatch = segmentBeforeClosing.match(/(\r?\n)([ \t]*)$/);
+      const lineBreak = whitespaceMatch ? whitespaceMatch[1] : "\n";
+      const closingIndent = whitespaceMatch ? whitespaceMatch[2] : "";
+      const removalLength = whitespaceMatch ? whitespaceMatch[0].length : 0;
+      const liIndent = closingIndent ? `${closingIndent}  ` : "  ";
+      const beforeClosing = segmentBeforeClosing.slice(0, segmentBeforeClosing.length - removalLength);
+      const insertion = `${lineBreak}${liIndent}<li>[[Hoạt động thực hành ${nextIndex}]]</li>`;
+      const closingPrefix = `${lineBreak}${closingIndent}`;
+      const updatedValue = `${beforeClosing}${insertion}${closingPrefix}${value.slice(listEnd)}`;
+      textarea.value = updatedValue;
+      const caretPosition = beforeClosing.length + insertion.length;
+      window.requestAnimationFrame(() => {
+        textarea.focus();
+        if (typeof textarea.setSelectionRange === "function") {
+          textarea.setSelectionRange(caretPosition, caretPosition);
+        }
+      });
+      return nextIndex;
+    };
+
+    const insertEducationKeyword = (textarea) => {
+      const value = textarea.value;
+      const listStart = value.indexOf('<ul class="edu-tags"');
+      if (listStart === -1) {
+        return null;
+      }
+      const listEnd = value.indexOf("</ul>", listStart);
+      if (listEnd === -1) {
+        return null;
+      }
+      const pattern = /\[\[Từ khóa #(\d+)\]\]/g;
+      let match;
+      let maxIndex = 0;
+      while ((match = pattern.exec(value)) !== null) {
+        const detected = Number.parseInt(match[1], 10);
+        if (!Number.isNaN(detected) && detected > maxIndex) {
+          maxIndex = detected;
+        }
+      }
+      const nextIndex = maxIndex + 1 || 1;
+      const segmentBeforeClosing = value.slice(0, listEnd);
+      const whitespaceMatch = segmentBeforeClosing.match(/(\r?\n)([ \t]*)$/);
+      const lineBreak = whitespaceMatch ? whitespaceMatch[1] : "\n";
+      const closingIndent = whitespaceMatch ? whitespaceMatch[2] : "";
+      const removalLength = whitespaceMatch ? whitespaceMatch[0].length : 0;
+      const liIndent = closingIndent ? `${closingIndent}  ` : "  ";
+      const beforeClosing = segmentBeforeClosing.slice(0, segmentBeforeClosing.length - removalLength);
+      const insertion = `${lineBreak}${liIndent}<li>[[Từ khóa #${nextIndex}]]</li>`;
+      const closingPrefix = `${lineBreak}${closingIndent}`;
+      const updatedValue = `${beforeClosing}${insertion}${closingPrefix}${value.slice(listEnd)}`;
+      textarea.value = updatedValue;
+      const caretPosition = beforeClosing.length + insertion.length;
+      window.requestAnimationFrame(() => {
+        textarea.focus();
+        if (typeof textarea.setSelectionRange === "function") {
+          textarea.setSelectionRange(caretPosition, caretPosition);
+        }
+      });
+      return nextIndex;
+    };
+
+    const insertEducationBlock = (textarea) => {
+      const value = textarea.value;
+      const anchorIndex = value.indexOf('<div class="edu-summary"');
+      if (anchorIndex === -1) {
+        return null;
+      }
+      const pattern = /\[\[Tiêu đề khối học #(\d+)\]\]/g;
+      let match;
+      let maxIndex = 0;
+      while ((match = pattern.exec(value)) !== null) {
+        const detected = Number.parseInt(match[1], 10);
+        if (!Number.isNaN(detected) && detected > maxIndex) {
+          maxIndex = detected;
+        }
+      }
+      const nextIndex = maxIndex + 1 || 1;
+      const segmentBeforeAnchor = value.slice(0, anchorIndex);
+      const whitespaceMatch = segmentBeforeAnchor.match(/(\r?\n)([ \t]*)$/);
+      const lineBreak = whitespaceMatch ? whitespaceMatch[1] : "\n";
+      const indent = whitespaceMatch ? whitespaceMatch[2] : "";
+      const removalLength = whitespaceMatch ? whitespaceMatch[0].length : 0;
+      const beforeAnchor = segmentBeforeAnchor.slice(0, segmentBeforeAnchor.length - removalLength);
+      const blockLines = [
+        `<div class="edu-block" aria-label="Khối học bổ sung">`,
+        `  <h4 class="eb-head">[[Tiêu đề khối học #${nextIndex}]]</h4>`,
+        `  <ul class="eb-list">`,
+        `    <li>[[Nội dung khối học #1]]</li>`,
+        `    <li>[[Nội dung khối học #2]]</li>`,
+        `    <li>[[Nội dung khối học #3]]</li>`,
+        `  </ul>`,
+        `</div>`
+      ];
+      const blockContent = blockLines.join(`\n${indent}`);
+      const insertion = `${lineBreak}${indent}${blockContent}`;
+      const closingPrefix = `${lineBreak}${indent}`;
+      const updatedValue = `${beforeAnchor}${insertion}${closingPrefix}${value.slice(anchorIndex)}`;
+      textarea.value = updatedValue;
+      const caretPosition = beforeAnchor.length + insertion.length;
+      window.requestAnimationFrame(() => {
+        textarea.focus();
+        if (typeof textarea.setSelectionRange === "function") {
+          textarea.setSelectionRange(caretPosition, caretPosition);
+        }
+      });
+      return nextIndex;
+    };
+
+    const removeEducationBlock = (textarea) => {
+      const value = textarea.value;
+      const blockRegex = /(\r?\n)[ \t]*<div class="edu-block" aria-label="Khối học bổ sung">[\s\S]*?<\/div>/g;
+      const matches = Array.from(value.matchAll(blockRegex));
+      if (matches.length === 0) {
+        return null;
+      }
+      const lastMatch = matches[matches.length - 1];
+      const [fullMatch] = lastMatch;
+      const startIndex = lastMatch.index ?? 0;
+      const endIndex = startIndex + fullMatch.length;
+      const titleMatch = fullMatch.match(/\[\[Tiêu đề khối học #(\d+)\]\]/);
+      const removedIndex = titleMatch ? Number.parseInt(titleMatch[1], 10) : null;
+      textarea.value = `${value.slice(0, startIndex)}${value.slice(endIndex)}`;
+      return typeof removedIndex === "number" ? removedIndex : null;
+    };
+
+    const removeEducationCourse = (textarea) => {
+      const value = textarea.value;
+      const blockStart = value.indexOf('aria-label="Học phần cốt lõi"');
+      if (blockStart === -1) {
+        return null;
+      }
+      const listStart = value.indexOf('<ul class="eb-list">', blockStart);
+      if (listStart === -1) {
+        return null;
+      }
+      const listEnd = value.indexOf('</ul>', listStart);
+      if (listEnd === -1) {
+        return null;
+      }
+      const listSegment = value.slice(listStart, listEnd);
+      const items = Array.from(listSegment.matchAll(/<li>[\s\S]*?<\/li>/g));
+      if (items.length <= 1) {
+        return null;
+      }
+      const lastItem = items[items.length - 1];
+      const itemText = lastItem[0];
+      const itemRelativeIndex = lastItem.index ?? 0;
+      const itemAbsoluteStart = listStart + itemRelativeIndex;
+      const itemAbsoluteEnd = itemAbsoluteStart + itemText.length;
+      const leadingWhitespaceMatch = value.slice(0, itemAbsoluteStart).match(/(\r?\n)([ \t]*)$/);
+      const removalStart = leadingWhitespaceMatch ? itemAbsoluteStart - leadingWhitespaceMatch[0].length : itemAbsoluteStart;
+      textarea.value = `${value.slice(0, removalStart)}${value.slice(itemAbsoluteEnd)}`;
+      const removedMatch = itemText.match(/\[\[Môn tiêu biểu ?#?(\d+)\]\]/);
+      return removedMatch ? Number.parseInt(removedMatch[1], 10) : null;
+    };
+
+    const removeEducationPractice = (textarea) => {
+      const value = textarea.value;
+      const blockStart = value.indexOf('aria-label="Thực hành & dự án nhỏ"');
+      if (blockStart === -1) {
+        return null;
+      }
+      const listStart = value.indexOf('<ul class="eb-list">', blockStart);
+      if (listStart === -1) {
+        return null;
+      }
+      const listEnd = value.indexOf('</ul>', listStart);
+      if (listEnd === -1) {
+        return null;
+      }
+      const listSegment = value.slice(listStart, listEnd);
+      const items = Array.from(listSegment.matchAll(/<li>[\s\S]*?<\/li>/g));
+      if (items.length <= 1) {
+        return null;
+      }
+      const lastItem = items[items.length - 1];
+      const itemText = lastItem[0];
+      const itemRelativeIndex = lastItem.index ?? 0;
+      const itemAbsoluteStart = listStart + itemRelativeIndex;
+      const itemAbsoluteEnd = itemAbsoluteStart + itemText.length;
+      const leadingWhitespaceMatch = value.slice(0, itemAbsoluteStart).match(/(\r?\n)([ \t]*)$/);
+      const removalStart = leadingWhitespaceMatch ? itemAbsoluteStart - leadingWhitespaceMatch[0].length : itemAbsoluteStart;
+      textarea.value = `${value.slice(0, removalStart)}${value.slice(itemAbsoluteEnd)}`;
+      const removedMatch = itemText.match(/\[\[Hoạt động thực hành ?#?(\d+)\]\]/);
+      return removedMatch ? Number.parseInt(removedMatch[1], 10) : null;
+    };
+
+    const removeEducationKeyword = (textarea) => {
+      const value = textarea.value;
+      const listStart = value.indexOf('<ul class="edu-tags"');
+      if (listStart === -1) {
+        return null;
+      }
+      const listEnd = value.indexOf('</ul>', listStart);
+      if (listEnd === -1) {
+        return null;
+      }
+      const listSegment = value.slice(listStart, listEnd);
+      const items = Array.from(listSegment.matchAll(/<li>[\s\S]*?<\/li>/g));
+      if (items.length <= 1) {
+        return null;
+      }
+      const lastItem = items[items.length - 1];
+      const itemText = lastItem[0];
+      const itemRelativeIndex = lastItem.index ?? 0;
+      const itemAbsoluteStart = listStart + itemRelativeIndex;
+      const itemAbsoluteEnd = itemAbsoluteStart + itemText.length;
+      const leadingWhitespaceMatch = value.slice(0, itemAbsoluteStart).match(/(\r?\n)([ \t]*)$/);
+      const removalStart = leadingWhitespaceMatch ? itemAbsoluteStart - leadingWhitespaceMatch[0].length : itemAbsoluteStart;
+      textarea.value = `${value.slice(0, removalStart)}${value.slice(itemAbsoluteEnd)}`;
+      const removedMatch = itemText.match(/\[\[Từ khóa #(\d+)\]\]/);
+      return removedMatch ? Number.parseInt(removedMatch[1], 10) : null;
+    };
+
+    const insertCertificateBlock = (textarea) => {
+      const value = textarea.value;
+      const anchorIndex = value.indexOf('<ul class="edu-tags"');
+      if (anchorIndex === -1) {
+        return null;
+      }
+      const pattern = /\[\[Tiêu đề khối nội dung #(\d+)\]\]/g;
+      let match;
+      let maxIndex = 0;
+      while ((match = pattern.exec(value)) !== null) {
+        const detected = Number.parseInt(match[1], 10);
+        if (!Number.isNaN(detected) && detected > maxIndex) {
+          maxIndex = detected;
+        }
+      }
+      const nextIndex = maxIndex + 1 || 1;
+      const segmentBeforeAnchor = value.slice(0, anchorIndex);
+      const whitespaceMatch = segmentBeforeAnchor.match(/(\r?\n)([ \t]*)$/);
+      const lineBreak = whitespaceMatch ? whitespaceMatch[1] : "\n";
+      const indent = whitespaceMatch ? whitespaceMatch[2] : "";
+      const removalLength = whitespaceMatch ? whitespaceMatch[0].length : 0;
+      const beforeAnchor = segmentBeforeAnchor.slice(0, segmentBeforeAnchor.length - removalLength);
+      const blockLines = [
+        `<div class="edu-block" aria-label="Khối nội dung bổ sung">`,
+        `  <h4 class="eb-head">[[Tiêu đề khối nội dung #${nextIndex}]]</h4>`,
+        `  <ul class="eb-list">`,
+        `    <li>[[Ý chính khối nội dung #1]]</li>`,
+        `    <li>[[Ý chính khối nội dung #2]]</li>`,
+        `    <li>[[Ý chính khối nội dung #3]]</li>`,
+        `  </ul>`,
+        `</div>`
+      ];
+      const blockContent = blockLines.join(`\n${indent}`);
+      const insertion = `${lineBreak}${indent}${blockContent}`;
+      const closingPrefix = `${lineBreak}${indent}`;
+      const updatedValue = `${beforeAnchor}${insertion}${closingPrefix}${value.slice(anchorIndex)}`;
+      textarea.value = updatedValue;
+      const caretPosition = beforeAnchor.length + insertion.length;
+      window.requestAnimationFrame(() => {
+        textarea.focus();
+        if (typeof textarea.setSelectionRange === "function") {
+          textarea.setSelectionRange(caretPosition, caretPosition);
+        }
+      });
+      return nextIndex;
+    };
+
+    const insertCertificateFocus = (textarea) => {
+      const value = textarea.value;
+      const blockStart = value.indexOf('aria-label="Trọng tâm"');
+      if (blockStart === -1) {
+        return null;
+      }
+      const listStart = value.indexOf('<ul class="eb-list">', blockStart);
+      if (listStart === -1) {
+        return null;
+      }
+      const listEnd = value.indexOf('</ul>', listStart);
+      if (listEnd === -1) {
+        return null;
+      }
+      const pattern = /\[\[Trọng tâm #(\d+)\]\]/g;
+      let match;
+      let maxIndex = 0;
+      while ((match = pattern.exec(value)) !== null) {
+        const detected = Number.parseInt(match[1], 10);
+        if (!Number.isNaN(detected) && detected > maxIndex) {
+          maxIndex = detected;
+        }
+      }
+      const nextIndex = maxIndex + 1 || 1;
+      const segmentBeforeClosing = value.slice(0, listEnd);
+      const whitespaceMatch = segmentBeforeClosing.match(/(\r?\n)([ \t]*)$/);
+      const lineBreak = whitespaceMatch ? whitespaceMatch[1] : "\n";
+      const closingIndent = whitespaceMatch ? whitespaceMatch[2] : "";
+      const removalLength = whitespaceMatch ? whitespaceMatch[0].length : 0;
+      const liIndent = closingIndent ? `${closingIndent}  ` : "  ";
+      const beforeClosing = segmentBeforeClosing.slice(0, segmentBeforeClosing.length - removalLength);
+      const insertion = `${lineBreak}${liIndent}<li>[[Trọng tâm #${nextIndex}]]</li>`;
+      const closingPrefix = `${lineBreak}${closingIndent}`;
+      const updatedValue = `${beforeClosing}${insertion}${closingPrefix}${value.slice(listEnd)}`;
+      textarea.value = updatedValue;
+      const caretPosition = beforeClosing.length + insertion.length;
+      window.requestAnimationFrame(() => {
+        textarea.focus();
+        if (typeof textarea.setSelectionRange === "function") {
+          textarea.setSelectionRange(caretPosition, caretPosition);
+        }
+      });
+      return nextIndex;
+    };
+
+    const insertCertificateApplication = (textarea) => {
+      const value = textarea.value;
+      const blockStart = value.indexOf('aria-label="Ứng dụng"');
+      if (blockStart === -1) {
+        return null;
+      }
+      const listStart = value.indexOf('<ul class="eb-list">', blockStart);
+      if (listStart === -1) {
+        return null;
+      }
+      const listEnd = value.indexOf('</ul>', listStart);
+      if (listEnd === -1) {
+        return null;
+      }
+      const pattern = /\[\[Ứng dụng #(\d+)\]\]/g;
+      let match;
+      let maxIndex = 0;
+      while ((match = pattern.exec(value)) !== null) {
+        const detected = Number.parseInt(match[1], 10);
+        if (!Number.isNaN(detected) && detected > maxIndex) {
+          maxIndex = detected;
+        }
+      }
+      const nextIndex = maxIndex + 1 || 1;
+      const segmentBeforeClosing = value.slice(0, listEnd);
+      const whitespaceMatch = segmentBeforeClosing.match(/(\r?\n)([ \t]*)$/);
+      const lineBreak = whitespaceMatch ? whitespaceMatch[1] : "\n";
+      const closingIndent = whitespaceMatch ? whitespaceMatch[2] : "";
+      const removalLength = whitespaceMatch ? whitespaceMatch[0].length : 0;
+      const liIndent = closingIndent ? `${closingIndent}  ` : "  ";
+      const beforeClosing = segmentBeforeClosing.slice(0, segmentBeforeClosing.length - removalLength);
+      const insertion = `${lineBreak}${liIndent}<li>[[Ứng dụng #${nextIndex}]]</li>`;
+      const closingPrefix = `${lineBreak}${closingIndent}`;
+      const updatedValue = `${beforeClosing}${insertion}${closingPrefix}${value.slice(listEnd)}`;
+      textarea.value = updatedValue;
+      const caretPosition = beforeClosing.length + insertion.length;
+      window.requestAnimationFrame(() => {
+        textarea.focus();
+        if (typeof textarea.setSelectionRange === "function") {
+          textarea.setSelectionRange(caretPosition, caretPosition);
+        }
+      });
+      return nextIndex;
+    };
+
+    const insertCertificateKeyword = (textarea) => {
+      const value = textarea.value;
+      const listStart = value.indexOf('<ul class="edu-tags"');
+      if (listStart === -1) {
+        return null;
+      }
+      const listEnd = value.indexOf('</ul>', listStart);
+      if (listEnd === -1) {
+        return null;
+      }
+      const pattern = /\[\[Từ khóa #(\d+)\]\]/g;
+      let match;
+      let maxIndex = 0;
+      while ((match = pattern.exec(value)) !== null) {
+        const detected = Number.parseInt(match[1], 10);
+        if (!Number.isNaN(detected) && detected > maxIndex) {
+          maxIndex = detected;
+        }
+      }
+      const nextIndex = maxIndex + 1 || 1;
+      const segmentBeforeClosing = value.slice(0, listEnd);
+      const whitespaceMatch = segmentBeforeClosing.match(/(\r?\n)([ \t]*)$/);
+      const lineBreak = whitespaceMatch ? whitespaceMatch[1] : "\n";
+      const closingIndent = whitespaceMatch ? whitespaceMatch[2] : "";
+      const removalLength = whitespaceMatch ? whitespaceMatch[0].length : 0;
+      const liIndent = closingIndent ? `${closingIndent}  ` : "  ";
+      const beforeClosing = segmentBeforeClosing.slice(0, segmentBeforeClosing.length - removalLength);
+      const insertion = `${lineBreak}${liIndent}<li>[[Từ khóa #${nextIndex}]]</li>`;
+      const closingPrefix = `${lineBreak}${closingIndent}`;
+      const updatedValue = `${beforeClosing}${insertion}${closingPrefix}${value.slice(listEnd)}`;
+      textarea.value = updatedValue;
+      const caretPosition = beforeClosing.length + insertion.length;
+      window.requestAnimationFrame(() => {
+        textarea.focus();
+        if (typeof textarea.setSelectionRange === "function") {
+          textarea.setSelectionRange(caretPosition, caretPosition);
+        }
+      });
+      return nextIndex;
+    };
+
+    const removeCertificateBlock = (textarea) => {
+      const value = textarea.value;
+      const blockRegex = /(\r?\n)[ \t]*<div class="edu-block" aria-label="Khối nội dung bổ sung">[\s\S]*?<\/div>/g;
+      const matches = Array.from(value.matchAll(blockRegex));
+      if (matches.length === 0) {
+        return null;
+      }
+      const lastMatch = matches[matches.length - 1];
+      const [fullMatch] = lastMatch;
+      const startIndex = lastMatch.index ?? 0;
+      const endIndex = startIndex + fullMatch.length;
+      const titleMatch = fullMatch.match(/\[\[Tiêu đề khối nội dung #(\d+)\]\]/);
+      const removedIndex = titleMatch ? Number.parseInt(titleMatch[1], 10) : null;
+      const updatedValue = `${value.slice(0, startIndex)}${value.slice(endIndex)}`;
+      textarea.value = updatedValue;
+      return typeof removedIndex === "number" ? removedIndex : 0;
+    };
+
+    const removeCertificateFocus = (textarea) => {
+      const value = textarea.value;
+      const blockStart = value.indexOf('aria-label="Trọng tâm"');
+      if (blockStart === -1) {
+        return null;
+      }
+      const listStart = value.indexOf('<ul class="eb-list">', blockStart);
+      if (listStart === -1) {
+        return null;
+      }
+      const listEnd = value.indexOf('</ul>', listStart);
+      if (listEnd === -1) {
+        return null;
+      }
+      const listSegment = value.slice(listStart, listEnd);
+      const items = Array.from(listSegment.matchAll(/<li>[\s\S]*?<\/li>/g));
+      if (items.length <= 1) {
+        return null;
+      }
+      const lastItem = items[items.length - 1];
+      const itemText = lastItem[0];
+      const itemRelativeIndex = lastItem.index ?? 0;
+      const itemAbsoluteStart = listStart + itemRelativeIndex;
+      const itemAbsoluteEnd = itemAbsoluteStart + itemText.length;
+      const leadingWhitespaceMatch = value.slice(0, itemAbsoluteStart).match(/(\r?\n)([ \t]*)$/);
+      const removalStart = leadingWhitespaceMatch ? itemAbsoluteStart - leadingWhitespaceMatch[0].length : itemAbsoluteStart;
+      const updatedValue = `${value.slice(0, removalStart)}${value.slice(itemAbsoluteEnd)}`;
+      textarea.value = updatedValue;
+      const removedMatch = itemText.match(/\[\[Trọng tâm #(\d+)\]\]/);
+      return removedMatch ? Number.parseInt(removedMatch[1], 10) : null;
+    };
+
+    const removeCertificateKeyword = (textarea) => {
+      const value = textarea.value;
+      const listStart = value.indexOf('<ul class="edu-tags"');
+      if (listStart === -1) {
+        return null;
+      }
+      const listEnd = value.indexOf('</ul>', listStart);
+      if (listEnd === -1) {
+        return null;
+      }
+      const listSegment = value.slice(listStart, listEnd);
+      const items = Array.from(listSegment.matchAll(/<li>[\s\S]*?<\/li>/g));
+      if (items.length <= 1) {
+        return null;
+      }
+      const lastItem = items[items.length - 1];
+      const itemText = lastItem[0];
+      const itemRelativeIndex = lastItem.index ?? 0;
+      const itemAbsoluteStart = listStart + itemRelativeIndex;
+      const itemAbsoluteEnd = itemAbsoluteStart + itemText.length;
+      const leadingWhitespaceMatch = value.slice(0, itemAbsoluteStart).match(/(\r?\n)([ \t]*)$/);
+      const removalStart = leadingWhitespaceMatch ? itemAbsoluteStart - leadingWhitespaceMatch[0].length : itemAbsoluteStart;
+      const updatedValue = `${value.slice(0, removalStart)}${value.slice(itemAbsoluteEnd)}`;
+      textarea.value = updatedValue;
+      const removedMatch = itemText.match(/\[\[Từ khóa #(\d+)\]\]/);
+      return removedMatch ? Number.parseInt(removedMatch[1], 10) : null;
+    };
+
+    const triggerStatus = (statusEl, message, duration = 2000, revert = false) => {
+      const original = statusEl.dataset.originalText || statusEl.textContent || "Đã sao chép!";
+      if (!statusEl.dataset.originalText) {
+        statusEl.dataset.originalText = original;
+      }
+      statusEl.textContent = message;
+      statusEl.classList.add("is-visible");
+      const existingTimer = statusTimers.get(statusEl);
+      if (typeof existingTimer === "number") {
+        window.clearTimeout(existingTimer);
+      }
+      const timer = window.setTimeout(() => {
+        statusEl.classList.remove("is-visible");
+        if (revert) {
+          statusEl.textContent = statusEl.dataset.originalText || "Đã sao chép!";
+        }
+        statusTimers.delete(statusEl);
+      }, duration);
+      statusTimers.set(statusEl, timer);
+    };
+
+    const activateSection = (sectionId) => {
+      if (!sectionId) {
+        return;
+      }
+      navButtons.forEach((button) => {
+        const isActive = button.dataset.section === sectionId;
+        button.classList.toggle("is-active", isActive);
+        if (isActive) {
+          button.setAttribute("aria-current", "page");
+        } else {
+          button.removeAttribute("aria-current");
+        }
+      });
+
+      panels.forEach((panel) => {
+        const isActive = panel.dataset.section === sectionId;
+        panel.classList.toggle("is-active", isActive);
+        panel.setAttribute("aria-hidden", isActive ? "false" : "true");
+      });
+    };
+
+    const defaultSection = navButtons.find((btn) => btn.classList.contains("is-active"))?.dataset.section || navButtons[0]?.dataset.section;
+    if (defaultSection) {
+      activateSection(defaultSection);
+    }
+
+    sectionNav?.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) {
+        return;
+      }
+      const button = target.closest("button.nav-btn");
+      if (!(button instanceof HTMLButtonElement)) {
+        return;
+      }
+      const sectionId = button.dataset.section;
+      if (!sectionId) {
+        return;
+      }
+      activateSection(sectionId);
+      button.focus();
+    });
+
+    main?.addEventListener("click", async (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) {
+        return;
+      }
+
+      const controlButton = target.closest(".add-goal-btn, .delete-btn");
+      if (controlButton instanceof HTMLButtonElement) {
+        const textAreaId = controlButton.getAttribute("data-target");
+        if (!textAreaId) {
+          return;
+        }
+        const textArea = document.getElementById(textAreaId);
+        if (!(textArea instanceof HTMLTextAreaElement)) {
+          return;
+        }
+        const goalType = controlButton.getAttribute("data-add-goal");
+        if (goalType) {
+          const nextIndex = insertGoalItem(textArea, goalType);
+          if (typeof nextIndex !== "number") {
+            return;
+          }
+          triggerResetFlash(textArea);
+          const status = main.querySelector(`.status[data-status-for="${textAreaId}"]`);
+          if (status instanceof HTMLElement) {
+            const label = goalType === "short" ? "ngắn hạn" : "dài hạn";
+            triggerStatus(status, `Đã thêm mục tiêu ${label} #${nextIndex}`, 2200, true);
+          }
+          const toastMessage = controlButton.getAttribute("data-toast") || "Đã thêm mục tiêu mới.";
+          showToast(toastMessage);
+          return;
+        }
+        const removeGoalType = controlButton.getAttribute("data-remove-goal");
+        if (removeGoalType) {
+          const removedIndex = removeGoalItem(textArea, removeGoalType);
+          if (removedIndex === null) {
+            return;
+          }
+          triggerResetFlash(textArea);
+          const status = main.querySelector(`.status[data-status-for="${textAreaId}"]`);
+          if (status instanceof HTMLElement) {
+            const label = removeGoalType === "short" ? "mục tiêu ngắn hạn" : "mục tiêu dài hạn";
+            const message = typeof removedIndex === "number" ? `Đã xóa ${label} #${removedIndex}` : `Đã xóa ${label}`;
+            triggerStatus(status, message, 2200, true);
+          }
+          const toastMessage = controlButton.getAttribute("data-toast") || "Đã xóa mục tiêu.";
+          showToast(toastMessage);
+          return;
+        }
+        const skillAction = controlButton.getAttribute("data-add-skill");
+        if (skillAction) {
+          if (skillAction === "group") {
+            const nextGroupIndex = insertSkillGroup(textArea);
+            if (typeof nextGroupIndex !== "number") {
+              return;
+            }
+            triggerResetFlash(textArea);
+            const status = main.querySelector(`.status[data-status-for="${textAreaId}"]`);
+            if (status instanceof HTMLElement) {
+              triggerStatus(status, `Đã thêm nhóm kỹ năng #${nextGroupIndex}`, 2200, true);
+            }
+            const toastMessage = controlButton.getAttribute("data-toast") || "Đã thêm nội dung mới.";
+            showToast(toastMessage);
+            return;
+          }
+          if (skillAction === "item") {
+            const existingGroups = Array.from(textArea.value.matchAll(/<div class="skill-group"/g));
+            const totalGroups = existingGroups.length;
+            if (totalGroups === 0) {
+              showToast("Chưa có nhóm kỹ năng. Hãy thêm nhóm trước.");
+              return;
+            }
+            let groupIndexAttr = controlButton.getAttribute("data-skill-group");
+            let targetGroupIndex;
+            if (groupIndexAttr) {
+              const parsed = Number.parseInt(groupIndexAttr, 10);
+              if (!Number.isNaN(parsed)) {
+                targetGroupIndex = Math.min(Math.max(parsed - 1, 0), totalGroups - 1);
+              }
+            }
+            if (!Number.isInteger(targetGroupIndex)) {
+              if (totalGroups > 1) {
+                const selection = await requestSkillGroupSelection(totalGroups);
+                if (!Number.isInteger(selection)) {
+                  showToast("Đã hủy thêm kỹ năng.");
+                  return;
+                }
+                targetGroupIndex = selection;
+              } else {
+                targetGroupIndex = 0;
+              }
+            }
+            const insertionResult = insertSkillItem(textArea, targetGroupIndex);
+            if (!insertionResult) {
+              return;
+            }
+            triggerResetFlash(textArea);
+            const status = main.querySelector(`.status[data-status-for="${textAreaId}"]`);
+            if (status instanceof HTMLElement) {
+              const { groupNumber, groupItemIndex } = insertionResult;
+              const statusMessage = typeof groupNumber === "number" && typeof groupItemIndex === "number"
+                ? `Đã thêm kỹ năng nhóm ${groupNumber} #${groupItemIndex}`
+                : "Đã thêm kỹ năng mới";
+              triggerStatus(status, statusMessage, 2200, true);
+            }
+            const toastMessage = controlButton.getAttribute("data-toast") || "Đã thêm nội dung mới.";
+            showToast(toastMessage);
+            return;
+          }
+          return;
+        }
+        const removeSkillAction = controlButton.getAttribute("data-remove-skill");
+        if (removeSkillAction === "item") {
+          const removalResult = removeSkillItem(textArea);
+          if (removalResult === null) {
+            return;
+          }
+          triggerResetFlash(textArea);
+          const status = main.querySelector(`.status[data-status-for="${textAreaId}"]`);
+          if (status instanceof HTMLElement) {
+            const { label, overallIndex, groupNumber, groupItemIndex } = removalResult;
+            let message;
+            if (label) {
+              message = `Đã xóa kỹ năng ${label}`;
+            } else if (typeof groupNumber === "number" && typeof groupItemIndex === "number") {
+              message = `Đã xóa kỹ năng nhóm ${groupNumber} #${groupItemIndex}`;
+            } else if (typeof overallIndex === "number") {
+              message = `Đã xóa kỹ năng #${overallIndex}`;
+            } else {
+              message = "Đã xóa kỹ năng";
+            }
+            triggerStatus(status, message, 2200, true);
+          }
+          const toastMessage = controlButton.getAttribute("data-toast") || "Đã xóa kỹ năng.";
+          showToast(toastMessage);
+          return;
+        }
+        const projectType = controlButton.getAttribute("data-add-project");
+        if (projectType) {
+          let nextIndex;
+          if (projectType === "task") {
+            nextIndex = insertProjectTask(textArea);
+          } else if (projectType === "keyword") {
+            nextIndex = insertProjectKeyword(textArea);
+          } else {
+            return;
+          }
+          if (typeof nextIndex !== "number") {
+            return;
+          }
+          triggerResetFlash(textArea);
+          const status = main.querySelector(`.status[data-status-for="${textAreaId}"]`);
+          if (status instanceof HTMLElement) {
+            const label = projectType === "task" ? "nhiệm vụ chính" : "từ khóa dự án";
+            triggerStatus(status, `Đã thêm ${label} #${nextIndex}`, 2200, true);
+          }
+          const toastMessage = controlButton.getAttribute("data-toast") || "Đã thêm nội dung mới.";
+          showToast(toastMessage);
+          return;
+        }
+        const removeProjectType = controlButton.getAttribute("data-remove-project");
+        if (removeProjectType) {
+          let removedIndex;
+          if (removeProjectType === "task") {
+            removedIndex = removeProjectTask(textArea);
+          } else if (removeProjectType === "keyword") {
+            removedIndex = removeProjectKeyword(textArea);
+          } else {
+            return;
+          }
+          if (removedIndex === null) {
+            return;
+          }
+          triggerResetFlash(textArea);
+          const status = main.querySelector(`.status[data-status-for="${textAreaId}"]`);
+          if (status instanceof HTMLElement) {
+            const label = removeProjectType === "task" ? "nhiệm vụ chính" : "từ khóa dự án";
+            const message = typeof removedIndex === "number" ? `Đã xóa ${label} #${removedIndex}` : `Đã xóa ${label}`;
+            triggerStatus(status, message, 2200, true);
+          }
+          const toastMessage = controlButton.getAttribute("data-toast") || "Đã xóa nội dung.";
+          showToast(toastMessage);
+          return;
+        }
+        const experienceType = controlButton.getAttribute("data-add-experience");
+        if (experienceType) {
+          let nextIndex;
+          if (experienceType === "task") {
+            nextIndex = insertExperienceTask(textArea);
+          } else if (experienceType === "keyword") {
+            nextIndex = insertExperienceKeyword(textArea);
+          } else {
+            return;
+          }
+          if (typeof nextIndex !== "number") {
+            return;
+          }
+          triggerResetFlash(textArea);
+          const status = main.querySelector(`.status[data-status-for="${textAreaId}"]`);
+          if (status instanceof HTMLElement) {
+            const statusMessage = experienceType === "task" ? `Đã thêm nhiệm vụ nổi bật #${nextIndex}` : `Đã thêm từ khóa kỹ thuật #${nextIndex}`;
+            triggerStatus(status, statusMessage, 2200, true);
+          }
+          const toastMessage = controlButton.getAttribute("data-toast") || "Đã thêm nội dung mới.";
+          showToast(toastMessage);
+          return;
+        }
+        const removeExperienceType = controlButton.getAttribute("data-remove-experience");
+        if (removeExperienceType) {
+          let removedIndex;
+          if (removeExperienceType === "task") {
+            removedIndex = removeExperienceTask(textArea);
+          } else if (removeExperienceType === "keyword") {
+            removedIndex = removeExperienceKeyword(textArea);
+          } else {
+            return;
+          }
+          if (removedIndex === null) {
+            return;
+          }
+          triggerResetFlash(textArea);
+          const status = main.querySelector(`.status[data-status-for="${textAreaId}"]`);
+          if (status instanceof HTMLElement) {
+            const label = removeExperienceType === "task" ? "nhiệm vụ nổi bật" : "từ khóa kỹ thuật";
+            const message = typeof removedIndex === "number" ? `Đã xóa ${label} #${removedIndex}` : `Đã xóa ${label}`;
+            triggerStatus(status, message, 2200, true);
+          }
+          const toastMessage = controlButton.getAttribute("data-toast") || "Đã xóa nội dung.";
+          showToast(toastMessage);
+          return;
+        }
+        const educationType = controlButton.getAttribute("data-add-education");
+        if (educationType) {
+          let nextIndex;
+          if (educationType === "block") {
+            nextIndex = insertEducationBlock(textArea);
+          } else if (educationType === "course") {
+            nextIndex = insertEducationCourse(textArea);
+          } else if (educationType === "practice") {
+            nextIndex = insertEducationPractice(textArea);
+          } else if (educationType === "keyword") {
+            nextIndex = insertEducationKeyword(textArea);
+          } else {
+            return;
+          }
+          if (typeof nextIndex !== "number") {
+            return;
+          }
+          triggerResetFlash(textArea);
+          const status = main.querySelector(`.status[data-status-for="${textAreaId}"]`);
+          if (status instanceof HTMLElement) {
+            let statusMessage;
+            if (educationType === "block") {
+              statusMessage = `Đã thêm khối học #${nextIndex}`;
+            } else if (educationType === "course") {
+              statusMessage = `Đã thêm môn tiêu biểu ${nextIndex}`;
+            } else if (educationType === "practice") {
+              statusMessage = `Đã thêm hoạt động thực hành ${nextIndex}`;
+            } else {
+              statusMessage = `Đã thêm từ khóa #${nextIndex}`;
+            }
+            triggerStatus(status, statusMessage, 2200, true);
+          }
+          const toastMessage = controlButton.getAttribute("data-toast") || "Đã thêm nội dung mới.";
+          showToast(toastMessage);
+          return;
+        }
+        const certificateType = controlButton.getAttribute("data-add-certificate");
+        if (certificateType) {
+          let nextIndex;
+          if (certificateType === "block") {
+            nextIndex = insertCertificateBlock(textArea);
+          } else if (certificateType === "focus") {
+            nextIndex = insertCertificateFocus(textArea);
+          } else if (certificateType === "application") {
+            nextIndex = insertCertificateApplication(textArea);
+          } else if (certificateType === "keyword") {
+            nextIndex = insertCertificateKeyword(textArea);
+          } else {
+            return;
+          }
+          if (typeof nextIndex !== "number") {
+            return;
+          }
+          triggerResetFlash(textArea);
+          const status = main.querySelector(`.status[data-status-for="${textAreaId}"]`);
+          if (status instanceof HTMLElement) {
+            let statusMessage;
+            if (certificateType === "block") {
+              statusMessage = `Đã thêm khối nội dung #${nextIndex}`;
+            } else if (certificateType === "focus") {
+              statusMessage = `Đã thêm trọng tâm #${nextIndex}`;
+            } else if (certificateType === "application") {
+              statusMessage = `Đã thêm ứng dụng #${nextIndex}`;
+            } else {
+              statusMessage = `Đã thêm từ khóa #${nextIndex}`;
+            }
+            triggerStatus(status, statusMessage, 2200, true);
+          }
+          const toastMessage = controlButton.getAttribute("data-toast") || "Đã thêm nội dung mới.";
+          showToast(toastMessage);
+          return;
+        }
+        const removeEducationType = controlButton.getAttribute("data-remove-education");
+        if (removeEducationType) {
+          let removedIndex;
+          if (removeEducationType === "block") {
+            removedIndex = removeEducationBlock(textArea);
+          } else if (removeEducationType === "course") {
+            removedIndex = removeEducationCourse(textArea);
+          } else if (removeEducationType === "practice") {
+            removedIndex = removeEducationPractice(textArea);
+          } else if (removeEducationType === "keyword") {
+            removedIndex = removeEducationKeyword(textArea);
+          } else {
+            return;
+          }
+          if (removedIndex === null) {
+            return;
+          }
+          triggerResetFlash(textArea);
+          const status = main.querySelector(`.status[data-status-for="${textAreaId}"]`);
+          if (status instanceof HTMLElement) {
+            let statusMessage;
+            if (removeEducationType === "block") {
+              statusMessage = typeof removedIndex === "number" && removedIndex > 0 ? `Đã xóa khối học #${removedIndex}` : "Đã xóa khối học";
+            } else if (removeEducationType === "course") {
+              statusMessage = typeof removedIndex === "number" ? `Đã xóa môn tiêu biểu ${removedIndex}` : "Đã xóa môn tiêu biểu";
+            } else if (removeEducationType === "practice") {
+              statusMessage = typeof removedIndex === "number" ? `Đã xóa hoạt động thực hành ${removedIndex}` : "Đã xóa hoạt động thực hành";
+            } else {
+              statusMessage = typeof removedIndex === "number" ? `Đã xóa từ khóa #${removedIndex}` : "Đã xóa từ khóa";
+            }
+            triggerStatus(status, statusMessage, 2200, true);
+          }
+          const toastMessage = controlButton.getAttribute("data-toast") || "Đã xóa nội dung.";
+          showToast(toastMessage);
+          return;
+        }
+
+        const removeType = controlButton.getAttribute("data-remove-certificate");
+        if (removeType) {
+          let removedIndex;
+          if (removeType === "block") {
+            removedIndex = removeCertificateBlock(textArea);
+          } else if (removeType === "focus") {
+            removedIndex = removeCertificateFocus(textArea);
+          } else if (removeType === "keyword") {
+            removedIndex = removeCertificateKeyword(textArea);
+          } else {
+            return;
+          }
+          if (removedIndex === null) {
+            return;
+          }
+          triggerResetFlash(textArea);
+          const status = main.querySelector(`.status[data-status-for="${textAreaId}"]`);
+          if (status instanceof HTMLElement) {
+            let statusMessage;
+            if (removeType === "block") {
+              statusMessage = typeof removedIndex === "number" && removedIndex > 0 ? `Đã xóa khối nội dung #${removedIndex}` : "Đã xóa khối nội dung";
+            } else if (removeType === "focus") {
+              statusMessage = typeof removedIndex === "number" ? `Đã xóa trọng tâm #${removedIndex}` : "Đã xóa trọng tâm";
+            } else {
+              statusMessage = typeof removedIndex === "number" ? `Đã xóa từ khóa #${removedIndex}` : "Đã xóa từ khóa";
+            }
+            triggerStatus(status, statusMessage, 2200, true);
+          }
+          const toastMessage = controlButton.getAttribute("data-toast") || "Đã xóa nội dung.";
+          showToast(toastMessage);
+          return;
+        }
+        return;
+      }
+
+      const resetButton = target.closest(".reset-btn");
+      if (resetButton instanceof HTMLButtonElement) {
+        const textAreaId = resetButton.getAttribute("data-reset");
+        if (!textAreaId) {
+          return;
+        }
+        const textArea = document.getElementById(textAreaId);
+        if (!(textArea instanceof HTMLTextAreaElement)) {
+          return;
+        }
+        const defaultValue = defaultSnippets.get(textAreaId);
+        if (typeof defaultValue !== "string") {
+          return;
+        }
+        textArea.value = defaultValue;
+        triggerResetFlash(textArea);
+        const status = main.querySelector(`.status[data-status-for="${textAreaId}"]`);
+        if (status instanceof HTMLElement) {
+          triggerStatus(status, "Đã khôi phục!", 1800, true);
+        }
+        const toastMessage = resetButton.getAttribute("data-toast") || "Đã khôi phục nội dung gốc.";
+        showToast(toastMessage);
+        return;
+      }
+
+      const copyButton = target.closest(".copy-btn");
+      if (!(copyButton instanceof HTMLButtonElement)) {
+        return;
+      }
+      const textAreaId = copyButton.getAttribute("data-copy");
+      if (!textAreaId) {
+        return;
+      }
+      const textArea = document.getElementById(textAreaId);
+      if (!(textArea instanceof HTMLTextAreaElement)) {
+        return;
+      }
+      const cleanedText = cleanPlaceholders(textArea.value);
+      let copyCompleted = false;
+      try {
+        await navigator.clipboard.writeText(cleanedText);
+        copyCompleted = true;
+      } catch (error) {
+        try {
+          const tempArea = document.createElement("textarea");
+          tempArea.style.position = "fixed";
+          tempArea.style.left = "-9999px";
+          tempArea.value = cleanedText;
+          document.body.appendChild(tempArea);
+          tempArea.select();
+          const commandResult = document.execCommand("copy");
+          document.body.removeChild(tempArea);
+          copyCompleted = commandResult;
+        } catch (fallbackError) {
+          copyCompleted = false;
+        }
+      }
+      if (!copyCompleted) {
+        return;
+      }
+      const status = main.querySelector(`.status[data-status-for="${textAreaId}"]`);
+      if (status instanceof HTMLElement) {
+        triggerStatus(status, status.dataset.originalText || status.textContent || "Đã sao chép!", 2000);
+      }
+      const toastMessage = copyButton.getAttribute("data-toast") || "Đã sao chép!";
+      showToast(toastMessage);
+    });
+  </script>
+</body>
+</html>
